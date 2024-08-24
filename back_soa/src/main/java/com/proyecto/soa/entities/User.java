@@ -2,7 +2,6 @@ package com.proyecto.soa.entities;
 
 import static jakarta.persistence.GenerationType.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.proyecto.soa.dtos.IUser;
