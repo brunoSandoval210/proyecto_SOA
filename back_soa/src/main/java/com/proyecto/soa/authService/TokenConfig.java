@@ -1,4 +1,4 @@
-package com.proyecto.soa.security;
+package com.proyecto.soa.authService;
 
 import io.jsonwebtoken.Jwts;
 
