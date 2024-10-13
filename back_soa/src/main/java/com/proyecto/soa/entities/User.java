@@ -65,7 +65,7 @@ public class User implements IUser {
     )
     private List<Role> roles;
 
-    //Atributo que no se mapea a la base de datos
+    //Atributo que no se mapea a la base de datos XD
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
