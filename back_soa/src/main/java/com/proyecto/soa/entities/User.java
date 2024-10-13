@@ -74,6 +74,7 @@ public class User implements IUser {
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean doctor;
+    
     //Atributo que no se mapea a la base de datos
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String username;
