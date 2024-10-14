@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping("/registrar")
+    @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody @Valid UserRequest userRequest){
         return new ResponseEntity<>(this.userService.registerUser(userRequest), HttpStatus.CREATED);
     }
