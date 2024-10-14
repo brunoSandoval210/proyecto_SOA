@@ -1,5 +1,6 @@
 package com.proyecto.soa.controllers;
 
+import com.proyecto.soa.dtos.UserUpdateDTO;
 import com.proyecto.soa.entities.User;
 import com.proyecto.soa.services.UserService;
 import jakarta.validation.Valid;
@@ -61,6 +62,16 @@ public class UserController {
         }
         //Se retorna un 404 porque no se encontro el usuario
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("user/{id}")
+    public ResponseEntity<User> update (@PathVariable Long id, @RequestBody UserUpdateDTO user){
+        Optional<User> userUpdate = userService.update(user, id);
+        if (userUpdate.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(userUpdate.orElseThrow());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     private ResponseEntity<?> validation (BindingResult result){
