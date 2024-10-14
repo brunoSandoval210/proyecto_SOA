@@ -5,15 +5,16 @@ import static jakarta.persistence.GenerationType.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -28,6 +29,12 @@ public class User {
     @Column(name = "apellido")
     private String lastname;
 
+    @Column(name = "dni")
+    private String dni;
+
+    @Column(name = "telefono")
+    private String phone;
+
     @Email
     @Column(name = "email")
     private String email;
@@ -35,18 +42,16 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "dni")
-    private String dni;
 
     //Relacion de muchos a muchos
-    @JsonIgnoreProperties
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.PERSIST)
     //Tabla intermedia
     @JoinTable(
-            name="usuario_rol",
-            joinColumns = {@JoinColumn(name="usuario_id")},
-            inverseJoinColumns = {@JoinColumn(name="rol_id")},
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"usuario_id","rol_id"})}
+            name="usuarios_roles",
+            joinColumns = @JoinColumn(name="usuario_id"),
+            inverseJoinColumns = @JoinColumn(name="rol_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","rol_id"})
     )
-    private List<Role> roles;
+
+    private Set<Role> roles =  new HashSet<>();
 }
