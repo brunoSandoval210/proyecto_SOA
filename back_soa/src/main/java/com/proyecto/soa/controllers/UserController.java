@@ -1,7 +1,7 @@
 package com.proyecto.soa.controllers;
 
-import com.proyecto.soa.dtos.UserUpdateDTO;
-import com.proyecto.soa.entities.User;
+import com.proyecto.soa.model.dtos.UserUpdateDTO;
+import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

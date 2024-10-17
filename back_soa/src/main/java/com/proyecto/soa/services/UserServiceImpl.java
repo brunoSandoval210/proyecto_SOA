@@ -1,9 +1,9 @@
 package com.proyecto.soa.services;
 
-import com.proyecto.soa.dtos.IUser;
-import com.proyecto.soa.dtos.UserUpdateDTO;
-import com.proyecto.soa.entities.Role;
-import com.proyecto.soa.entities.User;
+import com.proyecto.soa.model.IUser;
+import com.proyecto.soa.model.dtos.UserUpdateDTO;
+import com.proyecto.soa.model.entities.Role;
+import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.RolRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import org.springframework.data.domain.Page;

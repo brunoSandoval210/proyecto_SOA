@@ -1,6 +1,6 @@
 package com.proyecto.soa.repositories;
 
-import com.proyecto.soa.entities.Role;
+import com.proyecto.soa.model.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.proyecto.soa.dtos;
+package com.proyecto.soa.model;
 
 public interface IUser {
     boolean isAdmin();
