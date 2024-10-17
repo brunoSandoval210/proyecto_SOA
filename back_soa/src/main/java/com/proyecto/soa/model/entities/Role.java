@@ -1,17 +1,17 @@
-package com.proyecto.soa.userService;
+package com.proyecto.soa.model.entities;
 
+import com.proyecto.soa.model.enums.RoleEnum;
 import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.*;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
-@Table(name = "roles")
+@Table(name = "rol")
 public class Role {
     @Id
     @GeneratedValue(strategy = IDENTITY)

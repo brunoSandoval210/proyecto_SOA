@@ -1,6 +1,5 @@
-package com.proyecto.soa.userService.dto;
+package com.proyecto.soa.model.dtos;
 
-import com.proyecto.soa.userService.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
