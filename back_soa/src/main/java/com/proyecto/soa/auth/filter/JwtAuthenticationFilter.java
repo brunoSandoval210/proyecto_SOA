@@ -33,6 +33,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authenticationManager=authenticationManager;
     }
 
+    //Se sobreescribe el método attemptAuthentication para autenticar al usuario
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username=null;
@@ -55,6 +56,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return this.authenticationManager.authenticate(authenticationToken);
     }
 
+    //Se sobreescribe el método successfulAuthentication para generar el token
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         //Se obtiene el usuario autenticado
@@ -62,17 +64,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String username=user.getUsername();
         //Se obtienen los roles del usuario
         Collection<? extends GrantedAuthority>roles=authResult.getAuthorities();
-        //Se verifica si el usuario es administrador
-        boolean isAdmin=roles.stream().anyMatch(role->role.getAuthority().equals("ROLE_ADMIN"));
-        //Se verifica si el usuario es doctor
-        boolean isDoctor=roles.stream().anyMatch(role->role.getAuthority().equals("ROLE_DOCTOR"));
+
         //Se crean los claims del token
         Claims claims= Jwts
                 .claims()
                         .add("authorities",new ObjectMapper().writeValueAsString(roles))
                         .add("username",username)
-                        .add("isAdmin",isAdmin)
-                        .add("isDoctor",isDoctor)
                         .build();
         //Se crea el token
         String jwt=Jwts.builder()
@@ -97,6 +94,41 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(200);
     }
 
+    //Se Token para Recuperacion segura
+    protected void recuperacionAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        //Se obtiene el usuario autenticado
+        org.springframework.security.core.userdetails.User user=(org.springframework.security.core.userdetails.User)authResult.getPrincipal();
+        String username=user.getUsername();
+
+        //Se crean los claims del token
+        Claims claims= Jwts
+                .claims()
+                        .add("username",username)
+                        .build();
+        //Se crea el token
+        String jwt=Jwts.builder()
+                .subject(username)
+                .claims(claims)
+                .signWith(SECRET_KEY)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis()+3600000))
+                .compact();
+        //Se agrega el token al header de la respuesta
+        response.addHeader(HEADER_AUTHORIZATION,PREFIX_TOKEN+jwt);
+        //Se crea un objeto body con el token, el username y un mensaje
+        Map<String,String>body=new HashMap<>();
+        body.put("token",jwt);
+        body.put("username",username);
+        body.put("message",String.format("Pudiste ",username));
+        //Se escribe el body en la respuesta
+        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+        //Se establece el tipo de contenido de la respuesta
+        response.setContentType(CONTENT_TYPE);
+        //Se establece el status de la respuesta
+        response.setStatus(200);
+    }
+
+    //Se sobreescribe el método unsuccessfulAuthentication para manejar errores en la autenticación
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         //Se crea un objeto body con un mensaje de error

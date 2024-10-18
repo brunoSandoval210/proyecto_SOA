@@ -2,6 +2,7 @@ package com.proyecto.soa.auth;
 
 import com.proyecto.soa.auth.filter.JwtAuthenticationFilter;
 import com.proyecto.soa.auth.filter.JwtValidationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -23,15 +24,11 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.Arrays;
 
 @Configuration
+@RequiredArgsConstructor
 public class SpringSecurityConfig {
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
-//    public SpringSecurityConfig(
-//        AuthenticationConfiguration authenticationConfiguration
-//    ) {
-//        this.authenticationConfiguration = authenticationConfiguration;
-//    }
 
     @Bean
     AuthenticationManager authenticationManager() throws Exception {
@@ -56,7 +53,7 @@ public class SpringSecurityConfig {
                 .sessionManagement(management->management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
-
+    //Se configura el cors, se permite el acceso a la api desde cualquier origen y se habilitan los metodos post, get, put y delete
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config=new CorsConfiguration();

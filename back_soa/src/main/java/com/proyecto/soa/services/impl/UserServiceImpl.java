@@ -1,4 +1,4 @@
-package com.proyecto.soa.services;
+package com.proyecto.soa.services.impl;
 
 import com.proyecto.soa.model.IUser;
 import com.proyecto.soa.model.dtos.UserUpdateDTO;
@@ -6,6 +6,7 @@ import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.RolRepository;
 import com.proyecto.soa.repositories.UserRepository;
+import com.proyecto.soa.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private RolRepository rolRepository;
     private PasswordEncoder passwordEncoder;

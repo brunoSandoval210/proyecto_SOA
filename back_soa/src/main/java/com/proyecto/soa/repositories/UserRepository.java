@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByUsername(String username);
     //Busca un usuario por su DNI
     Optional<User> findByDni(String dni);
+
 }

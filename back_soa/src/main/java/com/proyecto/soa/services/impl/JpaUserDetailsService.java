@@ -1,4 +1,4 @@
-package com.proyecto.soa.services;
+package com.proyecto.soa.services.impl;
 
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.UserRepository;
