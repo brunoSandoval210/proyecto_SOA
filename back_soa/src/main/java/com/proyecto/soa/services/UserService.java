@@ -1,7 +1,7 @@
 package com.proyecto.soa.services;
 
-import com.proyecto.soa.dtos.UserUpdateDTO;
-import com.proyecto.soa.entities.User;
+import com.proyecto.soa.model.dtos.UserUpdateDTO;
+import com.proyecto.soa.model.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

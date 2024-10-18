@@ -29,6 +29,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         super(authenticationManager);
     }
 
+    //Se sobreescribe el método doFilterInternal para validar el token
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         //Se obtiene el header de la petición

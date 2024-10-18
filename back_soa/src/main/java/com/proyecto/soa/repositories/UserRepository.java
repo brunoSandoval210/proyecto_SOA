@@ -1,6 +1,6 @@
 package com.proyecto.soa.repositories;
 
-import com.proyecto.soa.entities.User;
+import com.proyecto.soa.model.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByUsername(String username);
     //Busca un usuario por su DNI
     Optional<User> findByDni(String dni);
+
 }
