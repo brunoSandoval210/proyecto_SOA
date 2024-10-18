@@ -45,6 +45,8 @@ public class SpringSecurityConfig {
         return httpSecurity.authorizeHttpRequests(authorizeRequests->
                 authorizeRequests
                 .requestMatchers(HttpMethod.GET,"soa/users/{page}").permitAll()
+                .requestMatchers(HttpMethod.POST,"soa/user").permitAll()
+                .requestMatchers(HttpMethod.PUT,"soa/user/{id}").permitAll()
                 .anyRequest().authenticated())
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))

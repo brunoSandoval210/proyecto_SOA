@@ -3,11 +3,8 @@ package com.proyecto.soa.model.entities;
 import static jakarta.persistence.GenerationType.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.proyecto.soa.model.IUser;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "usuario")
-public class User  implements IUser {
+public class User  {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -28,28 +25,28 @@ public class User  implements IUser {
 
     @Size(max = 45)
     @Column(name = "nombre")
-    @NotEmpty
+//    @NotEmpty
     private String name;
 
     @Size(max = 45)
     @Column(name = "apellido")
-    @NotEmpty
+//    @NotEmpty
     private String lastname;
 
     @Size(max = 45)
     @Email
     @Column(name = "email")
-    @NotEmpty
+//    @NotEmpty
     private String email;
 
     @Size(max = 45)
     @Column(name = "password")
-    @NotEmpty
+//    @NotEmpty
     private String password;
 
     @Size(max = 8)
     @Column(name = "dni")
-    @NotEmpty
+//    @NotEmpty
     private String dni;
 
     //Relacion de muchos a muchos
@@ -64,17 +61,5 @@ public class User  implements IUser {
     )
     private List<Role> roles;
 
-    //Atributo que no se mapea a la base de datos XD
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private boolean admin;
-
-    //Atributo que no se mapea a la base de datos
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private boolean doctor;
-
-    //Atributo que no se mapea a la base de datos
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 }
