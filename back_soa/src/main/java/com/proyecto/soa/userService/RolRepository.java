@@ -1,13 +1,13 @@
-package com.proyecto.soa.repositories;
+package com.proyecto.soa.userService;
 
-import com.proyecto.soa.model.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface RolRepository extends JpaRepository<Role,Long> {
-    //Busca un rol por su nombre
-    Optional<Role> findByName(String name);
+
+    List<Role> findRolesByRoleEnumIn (List<String> roleNames);
 }
