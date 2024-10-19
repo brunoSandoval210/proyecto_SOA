@@ -5,7 +5,6 @@ import com.proyecto.soa.model.dtos.LoginRequest;
 import com.proyecto.soa.model.dtos.PasswordUpdate;
 import jakarta.mail.MessagingException;
 
-import javax.naming.AuthenticationException;
 import java.io.IOException;
 
 public interface AuthService {

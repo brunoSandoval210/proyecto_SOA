@@ -15,14 +15,13 @@ import com.proyecto.soa.services.EmailService;
 import com.proyecto.soa.validation.PasswordValid;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final ModelMapper modelMapper;
 
     @Override
     public String recuperarContrasena(String email) throws IOException, MessagingException {
@@ -81,20 +81,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
-        System.out.println("loginRequest: " + loginRequest);
-
-        Optional<User> user= userRepository.findByEmail(loginRequest.getUsername());
-        System.out.println("user: " + user);
-
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                user.get().getEmail(), user.get().getPassword()));
-        UserDetailsDTO userDetailsDto=new UserDetailsDTO();
-        userDetailsDto.setUsername(user.get().getUsername());
-        userDetailsDto.setRole(user.get().getRole());
+                loginRequest.getUsername(), loginRequest.getPassword()));
 
-        System.out.println("userDetailsDto: " + userDetailsDto);
+        UserDetails user=modelMapper.map()
 
-        String token=jwtService.getToken(userDetailsDto);
+
+                userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+        String token=jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
                 .build();
