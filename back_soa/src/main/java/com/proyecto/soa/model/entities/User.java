@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "usuario")
-public class User  implements UserDetails {
+public class User implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -47,8 +47,6 @@ public class User  implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
-
-
 
     private String username;
 

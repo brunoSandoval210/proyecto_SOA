@@ -93,25 +93,4 @@ public class UserController {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @GetMapping("pruebaemail")
-    private ResponseEntity<?> pruebaemail () {
-
-        try {
-            emailService.sendMail("bruno.sandoval.alticsa@gmail.com", "prueba", "holaa");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("Email enviado");
-    }
-
-//    private static String stringHtml(String ruta) throws IOException {
-//        StringBuilder builder = new StringBuilder();
-//        BufferedReader in = new BufferedReader(new FileReader(ruta));
-//
-//        in.lines().forEach(line -> builder.append(line));
-//        in.close();
-//
-//        return builder.toString();
-//    }
 }

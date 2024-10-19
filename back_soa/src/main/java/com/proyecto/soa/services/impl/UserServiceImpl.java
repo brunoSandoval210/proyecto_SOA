@@ -7,6 +7,7 @@ import com.proyecto.soa.model.enums.RoleEnum;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
 
     @Transactional(readOnly = true)
@@ -37,12 +39,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User save(UserCreate user) {
-        User userSave=new User();
-        userSave.setName(user.getName());
-        userSave.setLastname(user.getLastname());
-        userSave.setEmail(user.getEmail());
-        userSave.setPassword(passwordEncoder.encode(user.getPassword()));
-        userSave.setDni(user.getDni());
+        User userSave=modelMapper.map(user, User.class);
+        userSave.setUsername(user.getEmail());
         userSave.setRole(RoleEnum.valueOf(user.getRole()));
         return userRepository.save(userSave);
     }

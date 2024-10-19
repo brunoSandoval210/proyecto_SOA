@@ -15,16 +15,18 @@ import com.proyecto.soa.services.EmailService;
 import com.proyecto.soa.validation.PasswordValid;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -39,26 +41,27 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final ModelMapper modelMapper;
+    private final UserDetailsService userDetailsService;
 
     @Override
     public String recuperarContrasena(String email) throws IOException, MessagingException {
         passwordValid.validUser(email);
         Optional<User> user = userRepository.findByEmail(email);
         String code = randomCodeGenerator.generateRandomCode(5);
+//        String token= jwtService.getToken(user.get());
 
         StringBuilder direccionRecuperar = new StringBuilder()
-                //   .append("http://localhost:4200/index.html?token=")
-                .append("google.com/index.html?email=")
-                .append(user.get().getEmail());
-//                .append();
+                .append("http://localhost:4200/token=")
+                .append(email)
+                .append("&code=")
+                .append(code);
         String content = stringHtml("src/main/resources/templates/EmailRecuperacion.html")
                 .replace("/url/",direccionRecuperar.toString())
                 .replace("{code}",code);
 
 
         HistoryRecuperation historyRecuperation = new HistoryRecuperation();
-        historyRecuperation.setCode(passwordEncoder.encode(code));
+        historyRecuperation.setCode(code);
         historyRecuperation.setUser(user.get());
         historyRecuperationRepository.save(historyRecuperation);
 
@@ -68,26 +71,30 @@ public class AuthServiceImpl implements AuthService {
         return "Se ha enviado un correo a su dirección de correo electrónico";
     }
 
+    @Transactional
     @Override
-    public String cambiarContrasena(PasswordUpdate passwordUpdate, String tokenUpdate){
-        String email=passwordEncoder.encode(tokenUpdate);
-        User userUpdatePassword=userRepository.findByEmail(email).get();
+    public String cambiarContrasena(PasswordUpdate passwordUpdate, String tokenUpdate, String code) {
+//        String email=jwtService.getUsernameFromToken(tokenUpdate);
+        System.out.println(tokenUpdate);
+
+        Optional<User> userUpdatePassword=userRepository.findByEmail(tokenUpdate);
+        HistoryRecuperation codeData=historyRecuperationRepository.findByCode(code);
+
+        if(codeData.getCode().equals(code)){
         passwordValid.isValidPassword(
-                passwordUpdate.getPassword(), passwordUpdate.getValidPassword(),email);
-        //falta validar que el token sea el mismo que el de la base de datos
-        userRepository.updatePassword(passwordUpdate.getPassword(),userUpdatePassword.getId());
+                passwordUpdate.getPassword(), passwordUpdate.getValidPassword(),tokenUpdate);
+        userRepository.updatePassword(passwordUpdate.getPassword(),userUpdatePassword.get().getId());
         return "Se ha actualizado la contraseña";
+        } else{
+            return "El código no es correcto";
+        }
     }
 
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword()));
-
-        UserDetails user=modelMapper.map()
-
-
-                userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+        UserDetails user=userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)

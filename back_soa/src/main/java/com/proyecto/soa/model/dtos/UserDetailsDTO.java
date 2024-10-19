@@ -25,6 +25,4 @@ public class UserDetailsDTO implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority((role.name())));
     }
-
-
 }

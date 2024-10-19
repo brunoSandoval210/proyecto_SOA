@@ -20,4 +20,10 @@ public class PasswordUpdate {
 
     @NotNull(message = "Escriba la contraseña nuevamente")
     private String validPassword;
+
+    @NotNull
+    private String token;
+
+    @NotNull
+    private String code;
 }

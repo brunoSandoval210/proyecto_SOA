@@ -30,9 +30,6 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
-
-
-    //Servicio para enviar un correo electronico
     @Async
     @Override
     public void sendMail(String to, String subject, String content) throws MessagingException {
@@ -45,8 +42,6 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
     }
 
-
-    //Servicio para enviar multiples correos electronicos
     @Async
     @Override
     public void sendMultipleMail(List<String> to, String subject, String content) throws MessagingException {

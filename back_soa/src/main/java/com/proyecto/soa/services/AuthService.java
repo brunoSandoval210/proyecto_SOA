@@ -9,6 +9,6 @@ import java.io.IOException;
 
 public interface AuthService {
     String recuperarContrasena(String email) throws IOException, MessagingException;
-    String cambiarContrasena(PasswordUpdate passwordUpdate, String tokenUpdate);
+    String cambiarContrasena(PasswordUpdate passwordUpdate, String tokenUpdate, String code);
     AuthResponse login(LoginRequest  loginRequest);
 }
