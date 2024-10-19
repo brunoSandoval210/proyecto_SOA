@@ -1,37 +1,26 @@
 package com.proyecto.soa.services.impl;
 
+import com.proyecto.soa.model.dtos.UserCreate;
 import com.proyecto.soa.model.dtos.UserUpdateDTO;
-import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
-import com.proyecto.soa.repositories.RolRepository;
+import com.proyecto.soa.model.enums.RoleEnum;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private RolRepository rolRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    //Se injecta las dependencias
-    public UserServiceImpl(
-            UserRepository userRepository,
-            RolRepository rolRepository,
-            PasswordEncoder passwordEncoder
-    ){
-        this.userRepository=userRepository;
-        this.rolRepository=rolRepository;
-        this.passwordEncoder=passwordEncoder;
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -47,10 +36,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(User user) {
-//        user.setRoles(getRoles(user));
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User save(UserCreate user) {
+        User userSave=new User();
+        userSave.setName(user.getName());
+        userSave.setLastname(user.getLastname());
+        userSave.setEmail(user.getEmail());
+        userSave.setPassword(passwordEncoder.encode(user.getPassword()));
+        userSave.setDni(user.getDni());
+        userSave.setRole(RoleEnum.valueOf(user.getRole()));
+        return userRepository.save(userSave);
     }
 
     @Transactional

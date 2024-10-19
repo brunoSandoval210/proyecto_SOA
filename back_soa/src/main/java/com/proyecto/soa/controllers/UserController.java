@@ -1,29 +1,35 @@
 package com.proyecto.soa.controllers;
 
+import com.proyecto.soa.model.dtos.UserCreate;
 import com.proyecto.soa.model.dtos.UserUpdateDTO;
 import com.proyecto.soa.model.entities.User;
+import com.proyecto.soa.services.EmailService;
 import com.proyecto.soa.services.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("soa/")
+@RequestMapping("")
+//@PreAuthorize("permitAll()")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
+    private final EmailService emailService;
 
-    public UserController(
-            UserService userService
-    ) {
-        this.userService = userService;
-    }
 
     @GetMapping("users/{page}")
     public Page<User> listPageable(@PathVariable Integer page){
@@ -43,8 +49,8 @@ public class UserController {
                 .body(Collections.singletonMap("error","El usuario no se encontro por el id: "+id));
     }
 
-    @PostMapping("user")
-    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult result) {
+    @PostMapping("registerUser")
+    public ResponseEntity<?> create(@Valid @RequestBody UserCreate user, BindingResult result) {
         if (result.hasErrors()) {
             return validation(result);
         }
@@ -86,4 +92,26 @@ public class UserController {
         //Se retorna un 400 porque hubo un error en la validacion
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @GetMapping("pruebaemail")
+    private ResponseEntity<?> pruebaemail () {
+
+        try {
+            emailService.sendMail("bruno.sandoval.alticsa@gmail.com", "prueba", "holaa");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("Email enviado");
+    }
+
+//    private static String stringHtml(String ruta) throws IOException {
+//        StringBuilder builder = new StringBuilder();
+//        BufferedReader in = new BufferedReader(new FileReader(ruta));
+//
+//        in.lines().forEach(line -> builder.append(line));
+//        in.close();
+//
+//        return builder.toString();
+//    }
 }
