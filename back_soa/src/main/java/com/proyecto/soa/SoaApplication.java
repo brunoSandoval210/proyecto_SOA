@@ -11,10 +11,5 @@ public class SoaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SoaApplication.class, args);
 	}
-	@PostConstruct
-	public void init() {
-		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-		System.out.println("Zona horaria configurada: " + TimeZone.getDefault().getID());
-	}
 
 }
