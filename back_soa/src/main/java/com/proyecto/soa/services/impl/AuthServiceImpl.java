@@ -1,8 +1,8 @@
 package com.proyecto.soa.services.impl;
 
 //import com.proyecto.soa.auth.service.CustomUserDetailService;
-import com.proyecto.soa.auth.AuthResponse;
-import com.proyecto.soa.auth.JwtService;
+import com.proyecto.soa.authService.AuthResponse;
+import com.proyecto.soa.authService.JwtService;
 import com.proyecto.soa.model.dtos.LoginRequest;
 import com.proyecto.soa.model.dtos.PasswordUpdate;
 import com.proyecto.soa.model.dtos.UserDetailsDTO;

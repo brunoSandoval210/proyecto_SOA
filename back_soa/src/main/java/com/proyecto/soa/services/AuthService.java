@@ -1,6 +1,6 @@
 package com.proyecto.soa.services;
 
-import com.proyecto.soa.auth.AuthResponse;
+import com.proyecto.soa.authService.AuthResponse;
 import com.proyecto.soa.model.dtos.LoginRequest;
 import com.proyecto.soa.model.dtos.PasswordUpdate;
 import jakarta.mail.MessagingException;

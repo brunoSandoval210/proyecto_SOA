@@ -1,4 +1,4 @@
-package com.proyecto.soa.auth;
+package com.proyecto.soa.authService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final com.proyecto.soa.auth.JwtService jwtService;
+    private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override

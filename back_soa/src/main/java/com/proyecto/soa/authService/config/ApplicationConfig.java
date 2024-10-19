@@ -1,4 +1,4 @@
-package com.proyecto.soa.auth.config;
+package com.proyecto.soa.auth.authService;
 
 import com.proyecto.soa.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,4 +44,6 @@ public class ApplicationConfig {
         return username -> (UserDetails) userRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User not fournd"));
     }
+
+
 }
