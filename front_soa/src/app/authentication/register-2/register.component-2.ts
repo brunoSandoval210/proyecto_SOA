@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './register.component.html',
   styles: ``
 })
-export class RegisterComponent {
+export class RegisterComponent2 {
 
   constructor(private route: ActivatedRoute, private router: Router){}
 

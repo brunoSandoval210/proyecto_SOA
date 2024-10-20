@@ -6,7 +6,7 @@ export default [
         loadComponent: () => import('./login.component-2'),
     },
     {
-        path:'login',
+        path:'login2',
         loadComponent: () => import('./login.component-2'),
     },
 ] as Routes;

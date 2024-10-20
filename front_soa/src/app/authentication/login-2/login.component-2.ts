@@ -10,7 +10,7 @@ import { ForgotPasswordComponent } from '../forgot-password/forgot-password.comp
   templateUrl: './login.component-2.html',
   styles: ``
 })
-export default class LoginComponent implements OnInit {
+export default class LoginComponent2 implements OnInit {
 
   passwordFieldType: string = 'password'; 
 
@@ -40,7 +40,7 @@ export default class LoginComponent implements OnInit {
   }
 
   registerFromLogin(){
-    this.router.navigate(['/register']);
+    this.router.navigate(['/register-2']);
   }
 /*
   openForgotPasswordModal() {
