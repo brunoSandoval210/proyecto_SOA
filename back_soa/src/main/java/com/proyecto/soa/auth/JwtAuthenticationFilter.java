@@ -1,4 +1,4 @@
-package com.proyecto.soa.authService;
+package com.proyecto.soa.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

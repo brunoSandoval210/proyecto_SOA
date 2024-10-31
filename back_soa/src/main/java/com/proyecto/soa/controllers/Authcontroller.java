@@ -1,7 +1,7 @@
 package com.proyecto.soa.controllers;
 
 import com.proyecto.soa.model.dtos.LoginRequest;
-import com.proyecto.soa.model.dtos.PasswordUpdate;
+import com.proyecto.soa.model.dtos.PasswordUpdateRquest;
 import com.proyecto.soa.services.AuthService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class Authcontroller {
     }
 
     @PostMapping("/cambiarContrasena")
-    public ResponseEntity<?> cambiarContrasena(@RequestBody PasswordUpdate password) {
+    public ResponseEntity<?> cambiarContrasena(@RequestBody PasswordUpdateRquest password) {
         System.out.println("tokenUpdate: " + password.getToken());
         return ResponseEntity.ok(authService.cambiarContrasena(
                 password, password.getToken(), password.getCode()));

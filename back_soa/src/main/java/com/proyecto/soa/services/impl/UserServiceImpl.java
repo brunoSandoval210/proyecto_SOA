@@ -1,9 +1,11 @@
 package com.proyecto.soa.services.impl;
 
-import com.proyecto.soa.model.dtos.UserCreate;
-import com.proyecto.soa.model.dtos.UserUpdateDTO;
+import com.proyecto.soa.model.dtos.UserCreateRequest;
+import com.proyecto.soa.model.dtos.UserUpdateRequest;
+import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.model.enums.RoleEnum;
+import com.proyecto.soa.repositories.RoleRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-
+    private final RoleRepository roleRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -38,12 +40,20 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(UserCreate user) {
-        User userSave=modelMapper.map(user, User.class);
-        userSave.setUsername(user.getEmail());
-        userSave.setRole(RoleEnum.valueOf(user.getRole()));
+    public User save(UserCreateRequest user) {
+
+            User userSave = modelMapper.map(user, User.class);
+            userSave.setUsername(user.getEmail());
+
+            Role roleSave = roleRepository.findByName(RoleEnum.ROLE_USER.toString())
+                    .orElseThrow(() -> new IllegalArgumentException("No se encontró el rol USER"));
+
+            userSave.setRole(roleSave);
+            userSave.setPassword(passwordEncoder.encode(user.getPassword()));
+
         return userRepository.save(userSave);
     }
+
 
     @Transactional
     @Override
@@ -53,41 +63,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Optional<User> update(UserUpdateDTO user, Long id) {
+    public Optional<User> update(UserUpdateRequest user, Long id) {
         Optional<User> userOptional=userRepository.findById(id);
 
         if(userOptional.isPresent()){
-            //se inicializa el objeto userUpdate con el objeto userOptional
             User userUpdate=userOptional.get();
             userUpdate.setName(user.getName());
             userUpdate.setLastname(user.getLastname());
             userUpdate.setEmail(user.getEmail());
-//            userUpdate.setRoles(getRoles(user));
-            //se retorna el objeto userUpdate
             return Optional.of(userRepository.save(userUpdate));
         }
-        //se retorna un objeto vacio
         return Optional.empty();
     }
 
-//    private List<Role> getRoles(IUser user){
-//        List<Role> roles=new ArrayList<>();
-//        //Se busca el rol por nombre
-//        Optional<Role> optionalRoleUser=rolRepository.findByName("ROLE_USER");
-//        //Si se encuentra el rol se agrega a la lista de roles
-//        optionalRoleUser.ifPresent(role->roles.add(role));
-//        if(user.isAdmin()){
-//            //Se busca el rol por nombre
-//            Optional<Role>optionalRoleAdmin=rolRepository.findByName("ROLE_ADMIN");
-//            //Si se encuentra el rol se agrega a la lista de roles
-//            optionalRoleAdmin.ifPresent(role->roles.add(role));
-//        }
-//        if(user.isDoctor()){
-//            //Se busca el rol por nombre
-//            Optional<Role>optionalRoleDoctor=rolRepository.findByName("ROLE_DOCTOR");
-//            //Si se encuentra el rol se agrega a la lista de roles
-//            optionalRoleDoctor.ifPresent(role->roles.add(role));
-//        }
-//        return roles;
-//    }
 }
