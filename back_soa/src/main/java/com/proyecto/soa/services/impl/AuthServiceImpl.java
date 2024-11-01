@@ -1,17 +1,17 @@
 package com.proyecto.soa.services.impl;
 
 //import com.proyecto.soa.auth.service.CustomUserDetailService;
-import com.proyecto.soa.authService.AuthResponse;
-import com.proyecto.soa.authService.JwtService;
+import com.proyecto.soa.auth.AuthResponse;
+import com.proyecto.soa.auth.JwtService;
 import com.proyecto.soa.model.dtos.LoginRequest;
-import com.proyecto.soa.model.dtos.PasswordUpdate;
-import com.proyecto.soa.model.dtos.UserDetailsDTO;
+import com.proyecto.soa.model.dtos.PasswordUpdateRquest;
 import com.proyecto.soa.model.entities.HistoryRecuperation;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.HistoryRecuperationRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.AuthService;
 import com.proyecto.soa.services.EmailService;
+import com.proyecto.soa.utilitarian.RandomCodeGenerator;
 import com.proyecto.soa.validation.PasswordValid;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -73,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public String cambiarContrasena(PasswordUpdate passwordUpdate, String tokenUpdate, String code) {
+    public String cambiarContrasena(PasswordUpdateRquest passwordUpdate, String tokenUpdate, String code) {
 //        String email=jwtService.getUsernameFromToken(tokenUpdate);
         System.out.println(tokenUpdate);
 
@@ -83,7 +82,8 @@ public class AuthServiceImpl implements AuthService {
         if(codeData.getCode().equals(code)){
         passwordValid.isValidPassword(
                 passwordUpdate.getPassword(), passwordUpdate.getValidPassword(),tokenUpdate);
-        userRepository.updatePassword(passwordUpdate.getPassword(),userUpdatePassword.get().getId());
+        userRepository.updatePassword(
+                passwordEncoder.encode(passwordUpdate.getPassword()),userUpdatePassword.get().getId());
         return "Se ha actualizado la contraseña";
         } else{
             return "El código no es correcto";

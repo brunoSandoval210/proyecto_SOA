@@ -1,4 +1,4 @@
-package com.proyecto.soa.services.impl;
+package com.proyecto.soa.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

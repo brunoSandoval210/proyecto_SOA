@@ -1,4 +1,4 @@
-package com.proyecto.soa.services.impl;
+package com.proyecto.soa.utilitarian;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class PasswordUpdate {
+public class PasswordUpdateRquest {
 
     @NotNull(message = "La contraseña es requerida")
     @NotBlank(message = "La contraseña no puede tener espacios en blanco")

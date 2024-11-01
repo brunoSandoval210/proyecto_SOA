@@ -1,4 +1,4 @@
-package com.proyecto.soa.authService;
+package com.proyecto.soa.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

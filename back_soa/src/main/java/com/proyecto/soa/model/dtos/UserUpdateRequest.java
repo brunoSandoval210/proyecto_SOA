@@ -1,7 +1,6 @@
 package com.proyecto.soa.model.dtos;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-public class UserUpdateDTO {
+public class UserUpdateRequest {
 
     @Size(max = 45,message = "El nombre no puede tener más de 45 caracteres")
     private String name;

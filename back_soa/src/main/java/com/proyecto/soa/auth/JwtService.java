@@ -1,4 +1,4 @@
-package com.proyecto.soa.authService;
+package com.proyecto.soa.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
