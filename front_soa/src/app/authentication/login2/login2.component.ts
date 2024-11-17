@@ -37,7 +37,7 @@ export class Login2Component {
     this.authService.login({ username, password }).subscribe({
       next: (response: any) => {
         this.authService.setToken(response.token);
-        this.router.navigate(['../../core/features/dashboard/dashboard']);
+        this.router.navigate(['./features/dashboard']);
       },
       error: (err) => {
         alert('Error en el inicio de sesión. Verifique sus credenciales.');

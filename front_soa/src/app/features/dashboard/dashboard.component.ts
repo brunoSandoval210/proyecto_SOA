@@ -4,16 +4,59 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
 import { ListComponent } from '../list/list.component'; // Ruta del componente List
 import { Board } from '../../core/models/board.model';
 import { Task } from '../../core/models/task.model';
+import { List } from '../../core/models/list.model';
+import { HeaderComponent } from "../../shared/components/header/header.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ListComponent],
+  imports: [CommonModule, DragDropModule, ListComponent, HeaderComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
 export class DashboardComponent {
-  boards: Board[] = []; // Define tu lista de tableros
+
+  boards: Board[] = [{
+                        id: 1,
+                        name: "Tablero SOA",
+                        lists: [{
+                                id: 1,
+                                name: "Por Hacer",
+                                tasks: [
+                                  {
+                                    id: 1, title: "Tarea 1",
+                                    assignedTo: undefined
+                                  },
+                                  {
+                                    id: 2, title: "Tarea 2",
+                                    assignedTo: undefined
+                                  },
+                                ]
+                              },{
+                                id: 2,
+                                name: "En curso",
+                                tasks: [
+                                  {
+                                    id: 1, title: "Tarea 1",
+                                    assignedTo: undefined
+                                  },
+                                ]
+                              },{
+                                id: 3,
+                                name: "Hecho",
+                                tasks: [
+                                  {
+                                    id: 1, title: "Tarea 1",
+                                    assignedTo: undefined
+                                  },
+                                  {
+                                    id: 2, title: "Tarea 2",
+                                    assignedTo: undefined
+                                  },
+                                ]
+                              }]
+                      },]; // Define tu lista de tableros
+                      
   selectedBoard: Board | null = null;
 
   selectBoard(board: Board) {
@@ -25,7 +68,14 @@ export class DashboardComponent {
   }
 
   addList() {
-    // Lógica para agregar una nueva lista al tablero seleccionado
+    /*if (this.selectedBoard) {
+      const newList: List = {
+        id: 1,
+        name: `Nueva Lista ${this.selectedBoard.lists.length + 1}`,
+        tasks: [],
+      };
+      this.selectedBoard.lists.push(newList);
+    }*/
   }
 
   drop(event: CdkDragDrop<Task[]>) {

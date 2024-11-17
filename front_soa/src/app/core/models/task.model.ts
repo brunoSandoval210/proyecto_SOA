@@ -1,6 +1,6 @@
 // task.model.ts
 export interface Task {
-assignedTo: any;
-    id?: string;
+    assignedTo: any;
+    id?: number;
     title?: string;
   }
