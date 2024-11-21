@@ -32,8 +32,11 @@
         </div>
         <div class="flex items-center space-x-4">
           <!-- Nombre del Tablero -->
-          <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white">Share</button>
+          <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white" (click)="openModal()">Share</button>
         </div>
+
+
+
       </header>
 
       <!-- Contenedor de Listas -->
@@ -46,7 +49,7 @@
               +
             </button>
           </div>
-          <div class="bg-gray-100 rounded shadow p-2 mb-2 text-sm">Tarea</div>
+          <app-task></app-task>
         </div>
 
         <!-- Lista: Pendiente -->
@@ -85,4 +88,13 @@
       </div>
     </main>
   </div>
+
+  <app-popup [title]="isEditMode ? 'Editar Tarea' : 'Compartir'">
+    @if(isEditMode) {
+      <app-edit-task></app-edit-task>
+    } @else {
+      <app-share-with-users></app-share-with-users>
+    }
+  </app-popup>
+
 </div>
