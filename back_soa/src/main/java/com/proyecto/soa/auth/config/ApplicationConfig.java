@@ -1,4 +1,4 @@
-package com.proyecto.soa.auth.authService;
+package com.proyecto.soa.auth.config;
 
 import com.proyecto.soa.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

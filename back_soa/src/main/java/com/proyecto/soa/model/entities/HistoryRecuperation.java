@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "historial_recuperacion")
-public class HistoryRecuperation {
+public class HistoryRecuperation extends Maintenance{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

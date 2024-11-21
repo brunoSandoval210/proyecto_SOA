@@ -2,9 +2,7 @@ package com.proyecto.soa.model.entities;
 
 import static jakarta.persistence.GenerationType.*;
 
-import com.proyecto.soa.model.enums.RoleEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "usuario")
-public class User implements UserDetails{
+public class User extends Maintenance implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -36,11 +34,25 @@ public class User implements UserDetails{
     @Column(name = "password")
     private String password;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rol_id")
     private Role role;
 
     private String username;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TableKanban tableKanban;
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_grupo",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "grupo_id")
+    )
+    private List<Group> groups;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Notification> notifications;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
