@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ListComponent } from '../list/list.component'; // Ruta del componente List
@@ -6,15 +6,34 @@ import { Board } from '../../core/models/board.model';
 import { Task } from '../../core/models/task.model';
 import { List } from '../../core/models/list.model';
 import { HeaderComponent } from "../../shared/components/header/header.component";
+import { SharingDataService } from '../../shared/services/sharing-data.service';
+import { PopupComponent } from "../../shared/utils/popup/popup.component";
+import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
+import { TaskComponent } from "../task/task.component";
+import { EditTaskComponent } from "../task/edit-task/edit-task.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ListComponent, HeaderComponent],
+  imports: [CommonModule, DragDropModule, ListComponent, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+
+  isEditMode: boolean = false;
+  selectedTask: any [] = [];
+
+  constructor(private sharingDataService: SharingDataService){
+  }
+
+  ngOnInit(): void {
+    this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
+      this.openModal(isOpen);
+    });
+
+    console.log(this.isEditMode);
+  }
 
   boards: Board[] = [{
                         id: 1,
@@ -89,6 +108,15 @@ export class DashboardComponent {
         event.currentIndex
       );
     }
+  }
+
+  openModal(editMode:boolean = false): void {
+    this.sharingDataService.onOpenCloseModal.emit(true);
+    this.isEditMode = editMode;
+  }
+  
+  closeModal(): void {
+    this.sharingDataService.onOpenCloseModal.emit(false);
   }
 
 }
