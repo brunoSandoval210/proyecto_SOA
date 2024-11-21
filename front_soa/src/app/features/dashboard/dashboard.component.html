@@ -1,126 +1,88 @@
-<p>ESTAS EN TU DASHBOARD Papi</p>
+<div class="flex flex-col h-screen">
+  <!-- Header -->
+  <header class="flex-shrink-0">
+    <app-header></app-header> <!-- Aquí se usa el componente del header -->
+  </header>
+  <div class="dashboard-container flex h-screen bg-gray-100">
+    <!-- Barra Lateral Izquierda -->
+    <aside class="sidebar w-60 bg-gray-800 text-gray-400 flex flex-col p-6">
+      <h2 class="text-2xl font-semibold mb-4 pb-4 border-b border-gray-700">Espacios de trabajo</h2>
+      <div class="workspace flex-1">
+        <p class="text-lg font-medium mb-3">Tableros</p>
+        <ul class="space-y-2">
+          <li *ngFor="let board of boards" (click)="selectBoard(board)"
+            class="cursor-pointer p-2 bg-gray-800 hover:bg-gray-600">
+            {{ board.name }}
+          </li>
+        </ul>
+      </div>
+      <button (click)="createBoard()" class="mt-4 bg-gray-800 hover:bg-gray-700 py-2 px-4 rounded-lg">
+        + Crear Tablero
+      </button>
+    </aside>
 
- <!-- Sidebar oscuro con logo de Tablazo -->
-<aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
-   <div class="h-full px-3 py-4 overflow-y-auto bg-gray-900">
-       <!-- Sección del logo -->
-       <div class="flex items-center justify-center mb-6">
-           <img class="h-10 w-auto" src="/tabla-logo.png" alt="Logo">
-           <h2 class="text-2xl font-bold text-white ml-2">Tablazo</h2>
-       </div>
-       
-      <ul class="space-y-2 font-medium">
-         <li>
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  //icono
-               </svg>
-               <span class="ml-3">Dashboard</span>
-            </a>
-         </li>
-         <li>.
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  //icono
-               </svg>
-               <span class="ml-3 flex-1">Kanban</span>
-               <!-- <span class="ml-auto bg-gray-800 text-gray-300 text-xs font-medium px-2 py-0.5 rounded">Pro</span> -->
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  //icono
-               </svg>
-               <span class="ml-3 flex-1">Mensajes</span>
-               <!-- <span class="ml-auto bg-blue-800 text-blue-300 text-xs font-medium px-2 py-0.5 rounded">3</span> -->
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                 //icono
-               </svg>
-               <span class="ml-3">Grupos</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  //icono
-               </svg>
-               <span class="ml-3">Products</span>
-            </a>
-         </li>
-         <li>
-            <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-700">
-               <svg class="w-6 h-6 text-gray-400 group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/>
-               </svg>
-               <span class="ml-3">Cerrar Sesion</span>
-            </a>
-         </li>
-         
-      </ul>
-   </div>
-</aside>
+    <!-- Área del Tablero Seleccionado -->
+    <main class="board-container flex-1 p-0">
+      <!-- Encabezado del Tablero -->
+      <header class="flex justify-between items-center bg-gray-400 text-gray-800 py-3 px-6 ">
+        <!-- Información del Tablero -->
+        <div class="flex items-center space-x-4">
+          <!-- Nombre del Tablero -->
+          <h1 class="text-2xl font-bold">{{ selectedBoard?.name || 'Mi tablero de Listas'}}</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <!-- Nombre del Tablero -->
+          <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white">Share</button>
+        </div>
+      </header>
 
-<!-- Contenido Principal con 4 columnas de tareas -->
-<div class="p-4 sm:ml-64">
-   <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-       <div class="grid grid-cols-4 gap-4">
-           <!-- Columna To Do -->
-           <div class="bg-white p-4 rounded-lg shadow">
-               <h2 class="text-lg font-bold mb-4 text-gray-900">To Do</h2>
-               <div class="bg-gray-100 p-4 rounded-lg mb-4">
-                   <h3 class="font-semibold">Optimize experience</h3>
-                   <p class="text-sm text-gray-500">Assigned to: John</p>
-               </div>
-               <div class="bg-gray-100 p-4 rounded-lg">
-                   <h3 class="font-semibold">Onboard workout</h3>
-                   <p class="text-sm text-gray-500">Assigned to: Alice</p>
-               </div>
-           </div>
-           
-           <!-- Columna In Progress -->
-           <div class="bg-white p-4 rounded-lg shadow">
-               <h2 class="text-lg font-bold mb-4 text-gray-900">In Progress</h2>
-               <div class="bg-gray-100 p-4 rounded-lg mb-4">
-                   <h3 class="font-semibold">Fast trip search</h3>
-                   <p class="text-sm text-gray-500">Assigned to: Mark</p>
-               </div>
-               <div class="bg-gray-100 p-4 rounded-lg">
-                   <h3 class="font-semibold">Shopping cart error</h3>
-                   <p class="text-sm text-gray-500">Assigned to: Mary</p>
-               </div>
-           </div>
+      <!-- Contenedor de Listas -->
+      <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100">
+        <!-- Lista: Tareas por Asignar -->
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+          <div class="flex justify-between items-center mb-2">
+            <h2 class="text-md font-semibold text-gray-800">Tareas por asignar</h2>
+            <button class="text-gray-400 p-1">
+              +
+            </button>
+          </div>
+          <div class="bg-gray-100 rounded shadow p-2 mb-2 text-sm">Tarea</div>
+        </div>
 
-           <!-- Columna In Review -->
-           <div class="bg-white p-4 rounded-lg shadow">
-               <h2 class="text-lg font-bold mb-4 text-gray-900">In Review</h2>
-               <div class="bg-gray-100 p-4 rounded-lg mb-4">
-                   <h3 class="font-semibold">Streamline booking flow</h3>
-                   <p class="text-sm text-gray-500">Assigned to: Paul</p>
-               </div>
-               <div class="bg-gray-100 p-4 rounded-lg">
-                   <h3 class="font-semibold">Travel suggestions</h3>
-                   <p class="text-sm text-gray-500">Assigned to: Kate</p>
-               </div>
-           </div>
+        <!-- Lista: Pendiente -->
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+          <div class="flex justify-between items-center mb-2">
+            <h2 class="text-md font-semibold text-gray-800">Pendiente</h2>
+            <button class="text-gray-400 p-1">
+              +
+            </button>
+          </div>
+          <div class="bg-red-100 rounded shadow p-2 mb-2 text-sm">Tarea 1</div>
+          <div class="bg-red-100 rounded shadow p-2 mb-2 text-sm">Tarea 2</div>
+        </div>
 
-           <!-- Columna Done -->
-           <div class="bg-white p-4 rounded-lg shadow">
-               <h2 class="text-lg font-bold mb-4 text-gray-900">Done</h2>
-               <div class="bg-gray-100 p-4 rounded-lg mb-4">
-                   <h3 class="font-semibold">High outage fix</h3>
-                   <p class="text-sm text-gray-500">Completed by: Alex</p>
-               </div>
-               <div class="bg-gray-100 p-4 rounded-lg">
-                   <h3 class="font-semibold">Purchasing performance fix</h3>
-                   <p class="text-sm text-gray-500">Completed by: Sam</p>
-               </div>
-           </div>
-       </div>
-   </div>
+        <!-- Lista: En Proceso -->
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+          <div class="flex justify-between items-center mb-2">
+            <h2 class="text-md font-semibold text-gray-800">En Proceso</h2>
+            <button class="text-gray-400 p-1">
+              +
+            </button>
+          </div>
+          <div class="bg-yellow-100 rounded shadow p-2 mb-2 text-sm">Tarea 3</div>
+        </div>
+
+        <!-- Lista: Finalizadas -->
+        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+          <div class="flex justify-between items-center mb-2">
+            <h2 class="text-md font-semibold text-gray-800">Finalizadas</h2>
+            <button class="text-gray-400 p-1">
+              +
+            </button>
+          </div>
+          <div class="bg-green-100 rounded shadow p-2 mb-2 text-sm">Tarea 4</div>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
-
