@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TaskComponent } from '../task.component';
 
 @Component({
   selector: 'app-edit-task',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './edit-task.component.scss'
 })
 export class EditTaskComponent {
-
+  
 }
