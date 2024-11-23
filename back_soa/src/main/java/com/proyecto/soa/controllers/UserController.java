@@ -25,21 +25,19 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("users/{page}")
-    public Page<User> listPageable(@PathVariable Integer page){
+    public Page<UserResponse> listPageable(@PathVariable Integer page){
         Pageable pageable= PageRequest.of(page,10);
         return userService.findAll(pageable);
     }
 
     @GetMapping("user/{id}")
     public ResponseEntity<?> show(@PathVariable Long id){
-        Optional<User> user=userService.findById(id);
-        if(user.isPresent()){
-            //Se retorna un 200 porque se encontro el usuario
-            return ResponseEntity.status(HttpStatus.OK).body(user.orElseThrow());
+        try {
+            UserResponse user = userService.findById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
         }
-        //
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Collections.singletonMap("error","El usuario no se encontro por el id: "+id));
     }
 
     @PostMapping("registerUser")
@@ -57,25 +55,28 @@ public class UserController {
         }
     }
 
+    @PutMapping("user/{id}")
+    public ResponseEntity<?> update (@PathVariable Long id, @RequestBody UserUpdateRequest userUpdateRequest, BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+            }
+            UserResponse userResponse = userService.update(userUpdateRequest, id);
+            return ResponseEntity.status(HttpStatus.OK).body(userResponse);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error",e.getMessage()));
+        }
+    }
+
     @DeleteMapping("user/{id}")
     public ResponseEntity<Void> delete (@PathVariable Long id){
-        Optional<User> optionalUser=userService.findById(id);
-        if(optionalUser.isPresent()){
+        UserResponse optionalUser=userService.findById(id);
+        if(optionalUser!=null){
             userService.deleteById(id);
             //Se retorna un 204 porque no hay contenido
             return ResponseEntity.status((HttpStatus.NO_CONTENT)).build();
         }
         //Se retorna un 404 porque no se encontro el usuario
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @PutMapping("user/{id}")
-    public ResponseEntity<User> update (@PathVariable Long id, @RequestBody UserUpdateRequest user){
-        Optional<User> userUpdate = userService.update(user, id);
-        if (userUpdate.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(userUpdate.orElseThrow());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
     }
 }

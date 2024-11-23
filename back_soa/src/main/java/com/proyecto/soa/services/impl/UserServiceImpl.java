@@ -1,10 +1,9 @@
 package com.proyecto.soa.services.impl;
 
-import com.proyecto.soa.model.dtos.UserCreateRequest;
-import com.proyecto.soa.model.dtos.UserResponse;
-import com.proyecto.soa.model.dtos.UserUpdateRequest;
+import com.proyecto.soa.model.dtos.*;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.UserRepository;
+import com.proyecto.soa.services.TaskService;
 import com.proyecto.soa.services.UserService;
 import com.proyecto.soa.validation.UserValid;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +24,23 @@ public class UserServiceImpl implements UserService {
     private final UserValid userValid;
     private final PasswordEncoder passwordEncoder;
 
+
     @Transactional(readOnly = true)
     @Override
-    public Page<User> findAll(Pageable pageable) {
-        return this.userRepository.findAll(pageable);
+    public Page<UserResponse> findAll(Pageable pageable) {
+
+        Page<User> users = userRepository.findAll(pageable);
+
+        return users.map(user -> modelMapper.map(user, UserResponse.class));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public UserResponse findById(Long id) {
+
+        Optional<User> user = userRepository.findById(id);
+
+        return user.map(value -> modelMapper.map(value, UserResponse.class)).orElse(null);
     }
 
     @Transactional
@@ -42,18 +48,12 @@ public class UserServiceImpl implements UserService {
     public UserResponse save(UserCreateRequest userRequest) {
 
         User user = userValid.validUser(userRequest);
-        user = userRepository.save(user);
-        UserResponse userResponse=modelMapper.map(user, UserResponse.class);
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setStatus(1);
+        userRepository.save(user);
+
         return userResponse;
-    }
-
-
-    @Transactional
-    @Override
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
     }
 
     @Transactional
@@ -70,4 +70,11 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
 }
