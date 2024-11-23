@@ -3,13 +3,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
 // :root{
 //     color-scheme: dark light;
 // }
 
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
 body{
-    @apply bg-gray-400;
+    @apply bg-gray-50;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
