@@ -35,9 +35,14 @@ public class TaskServiceImpl implements TaskService {
 
     @Transactional
     @Override
-    public TaskResponse updateTask(TaskRequest taskRequest) {
-//        Task task = taskValid.validUpdateTask(taskRequest);
-        return null;
+    public TaskResponse updateTask(TaskRequest taskRequest, Long id) {
+        Task task = taskValid.validUpdateTask(taskRequest,id);
+
+        task = taskRepository.save(task);
+        TaskResponse taskResponse = modelMapper.map(task, TaskResponse.class);
+        taskResponse.setNameUser(task.getAssignedUser().getName());
+        taskResponse.setUserId(task.getAssignedUser().getId());
+        return taskResponse;
     }
 
 
