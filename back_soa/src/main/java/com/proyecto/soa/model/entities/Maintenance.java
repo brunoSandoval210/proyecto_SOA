@@ -1,8 +1,11 @@
 package com.proyecto.soa.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,11 +18,16 @@ public class Maintenance {
     @Column(name = "usuario_actualizacion")
     private String userUpdate;
 
-    @Column(updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",name = "fecha_creacion")
-    private LocalDateTime dateCreate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(updatable = false, nullable = false)
+    @CreationTimestamp
+    private LocalDateTime dateRegister;
 
-    @Column(name = "fecha_actualizacion", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @UpdateTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(nullable = false)
     private LocalDateTime dateUpdate;
+
 
     @Column(name = "estado", columnDefinition = "TINYINT DEFAULT 1")
     private Integer status;

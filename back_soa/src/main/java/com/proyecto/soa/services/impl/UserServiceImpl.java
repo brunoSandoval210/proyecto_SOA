@@ -4,10 +4,10 @@ import com.proyecto.soa.model.dtos.UserCreateRequest;
 import com.proyecto.soa.model.dtos.UserUpdateRequest;
 import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
-import com.proyecto.soa.model.enums.RoleEnum;
 import com.proyecto.soa.repositories.RoleRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.UserService;
+import com.proyecto.soa.validation.impl.UserValidation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
+    private final UserValidation userValidation;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,14 +43,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(UserCreateRequest user) {
 
-            User userSave = modelMapper.map(user, User.class);
-            userSave.setUsername(user.getEmail());
+        User userSave = modelMapper.map(user, User.class);
+        userSave.setUsername(user.getEmail());
 
-            Role roleSave = roleRepository.findByName(RoleEnum.ROLE_USER.toString())
-                    .orElseThrow(() -> new IllegalArgumentException("No se encontró el rol USER"));
+        //Validaciones
+        userValidation.validUserEmail(user.getEmail());
 
-            userSave.setRole(roleSave);
-            userSave.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role roleSave = roleRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró el rol"));
+
+        userSave.setRole(roleSave);
+        userSave.setStatus(1);
+        userSave.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(userSave);
     }
