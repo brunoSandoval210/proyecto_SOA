@@ -1,0 +1,7 @@
+<div class="bg-white rounded-lg shadow p-4 flex flex-col">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-md font-semibold text-gray-800">{{ title }}</h2>
+      <button class="text-gray-400 p-1" (click)="addTask()">+</button>
+    </div>
+    <app-task *ngFor="let task of tasks" [task]="task"></app-task>
+</div>

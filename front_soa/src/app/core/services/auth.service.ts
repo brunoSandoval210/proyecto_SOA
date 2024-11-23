@@ -1,14 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private userSubject = new BehaviorSubject<any>(null); 
+  private userSubject = new BehaviorSubject<any>(null);
   user$ = this.userSubject.asObservable();
 
   private url: string = `${environment.apiUrl}/auth`;
@@ -20,7 +19,7 @@ export class AuthService {
     isAuth: false,
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private isBrowser(): boolean {
     return typeof window !== 'undefined';
@@ -42,8 +41,8 @@ export class AuthService {
   getAuthHeaders(): HttpHeaders {
     const token = this.token;
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
   }
 
@@ -75,12 +74,12 @@ export class AuthService {
     const payload = this.getPayload(token);
     if (payload) {
       this.user = {
-        username: payload.sub,
+        id: payload.id, // Extraer el ID del usuario
+        username: payload.username, // Extraer el username del usuario
         role: payload.authorities[0], // Asumiendo que solo hay un rol
-        isAuth: true
+        isAuth: true,
       };
-      // Imprimir la duración del token
-      const expirationDate = new Date(payload.exp * 1000);
+      console.log('Token válido hasta:', new Date(payload.exp * 1000));
     }
   }
 
@@ -95,12 +94,17 @@ export class AuthService {
   }
 
   getUserId() {
-    return this.user.id;
+    return this.user.id; // Retorna el ID del usuario desde el estado
   }
 
   getPayload(token: string) {
     if (token !== undefined) {
-      return JSON.parse(atob(token.split(".")[1]));
+      try {
+        return JSON.parse(atob(token.split('.')[1])); // Decodificar el payload del token
+      } catch (e) {
+        console.error('Error decodificando el token:', e);
+        return null;
+      }
     }
     return null;
   }
@@ -123,7 +127,7 @@ export class AuthService {
       isAuth: false,
       role: '',
       id: 0,
-      username: ''
+      username: '',
     };
     if (this.isBrowser()) {
       sessionStorage.removeItem('login');

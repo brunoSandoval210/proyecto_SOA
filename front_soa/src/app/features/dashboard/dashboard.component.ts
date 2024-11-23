@@ -11,14 +11,15 @@ import { PopupComponent } from "../../shared/utils/popup/popup.component";
 import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
 import { TaskComponent } from "../task/task.component";
 import { EditTaskComponent } from "../task/edit-task/edit-task.component";
-import { BoardComponent } from "../board/board.component";
-import { BoardService } from '../../core/services/board.service';
-import { response } from 'express';
+import { TableKanbanService } from '../../core/services/table-kanban.service';
+import { AuthService } from '../../core/services/auth.service';
+import { TableComponent } from '../../shared/utils/table/table.component';
+import { BoardComponent } from '../board/board.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent, BoardComponent],
+  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, EditTaskComponent,TableComponent, BoardComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -26,9 +27,12 @@ export class DashboardComponent implements OnInit{
 
   isEditMode: boolean = false;
   selectedTask: any [] = [];
+  userId:number = 0;
+  table: { id: number; name: string; columns: any[] } | null = null;
 
   constructor(private sharingDataService: SharingDataService,
-    private boardService: BoardService,
+              private tableKanbanService:TableKanbanService,    
+              private authService:AuthService
   ){
   }
 
@@ -36,8 +40,8 @@ export class DashboardComponent implements OnInit{
     this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
       this.openModal(isOpen);
     });
-
-    console.log(this.isEditMode);
+    this.userId = this.authService.getUserId();
+    this.getTable();
   }
 
    // Define tu lista de tableros
@@ -85,8 +89,16 @@ export class DashboardComponent implements OnInit{
     this.sharingDataService.onOpenCloseModal.emit(false);
   }
 
-  getBoards(): void{
-    //this.boardService.getBoards(2).subscribe(response: any);
+  getTable() {
+    this.tableKanbanService.getTablesByUser(this.userId).subscribe({
+      next: (data: any) => {
+        this.table = data;
+        console.log('Tablero Kanban:', this.table);
+      },
+      error: (err) => {
+        console.error('Error al obtener el tablero:', err);
+      }
+    });  
   }
 
 }

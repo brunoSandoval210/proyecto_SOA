@@ -14,5 +14,6 @@ public class UserResponse {
     private String lastname;
     private String email;
     private RoleResponse role;
+    private TableKanbanResponse tableKanban;
 
 }

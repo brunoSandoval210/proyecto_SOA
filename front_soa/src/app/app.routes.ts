@@ -14,21 +14,5 @@ export const routes: Routes = [
 
     //****************************Dashboard *****************************/
     {path:'dashboard', component:DashboardComponent},
-    // {
-    //     path:'',
-    //     pathMatch:'full',
-    //     redirectTo:'auth/login'
-    // },
-    // {
-    //     path: 'auth',
-    //     loadChildren: () => import('./authentication/auth.routes').then(m => m.authRoutes),
-    // },
-    // {
-    //     path: 'features',
-    //     loadChildren: () => import('./features/features.routes').then(m => m.featuresRoutes),
-    // },
-    // {
-    //     path:'home',
-    //     component:HomeComponent
-    // }
+
 ];

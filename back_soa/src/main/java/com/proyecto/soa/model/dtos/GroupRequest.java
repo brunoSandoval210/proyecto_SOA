@@ -2,14 +2,17 @@ package com.proyecto.soa.model.dtos;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+import java.util.List;
+
 @Getter
 @Setter
-public class TableRequest {
+public class GroupRequest {
+    @NotNull
     private String name;
-    private Long userId;
-    private Long groupId;
+    @NotNull
+    private Long tableId;
+    @NotNull
+    private List<UserResponse> users;
 }
