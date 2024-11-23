@@ -40,6 +40,16 @@ public class UserController {
         }
     }
 
+    @GetMapping("user/email")
+    public ResponseEntity<?> showByEmail(@RequestParam String email){
+        try {
+            List<UserResponse> user = userService.findByEmail(email);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
     @PostMapping("registerUser")
     public ResponseEntity<?> create(@Valid @RequestBody UserCreateRequest user, BindingResult result) {
 

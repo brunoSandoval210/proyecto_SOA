@@ -25,10 +25,9 @@ public class TableKanbanValidation implements TableKanbanValid {
         }
 
         TableKanban tableKanban = new TableKanban();
-        boolean existUser = userid != null && userRepository.existsById(userid);
         boolean existGroup = groupId != null && groupRepository.existsById(groupId);
 
-        if (existUser && existGroup) {
+        if (existGroup) {
             throw new RuntimeException("Una tabla kanban debe tener un usuario o un grupo, no ambos");
         }
         tableKanban.setName(name);
