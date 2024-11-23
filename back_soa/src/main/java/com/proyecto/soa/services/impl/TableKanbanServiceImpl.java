@@ -1,6 +1,7 @@
 package com.proyecto.soa.services.impl;
 
 import com.proyecto.soa.model.dtos.TableKanbanResponse;
+import com.proyecto.soa.model.dtos.TableRequest;
 import com.proyecto.soa.model.entities.TableKanban;
 import com.proyecto.soa.repositories.TableKanbanRepository;
 import com.proyecto.soa.services.TableKanbanService;
@@ -21,27 +22,25 @@ public class TableKanbanServiceImpl implements TableKanbanService {
     @Override
     public TableKanbanResponse getFindByUser(Long id) {
         TableKanban tableKanban = tableKanbanRepository.findByUser_Id(id);
-        if (tableKanban != null) {
-            return modelMapper.map(tableKanban, TableKanbanResponse.class);
-        }
-        return null;
+        return modelMapper.map(tableKanban, TableKanbanResponse.class);
     }
 
     @Transactional(readOnly = true)
     @Override
     public TableKanbanResponse getFindByGroup(Long id) {
         TableKanban tableKanban = tableKanbanRepository.findByGroup_Id(id);
-        if (tableKanban != null) {
-            return modelMapper.map(tableKanban, TableKanbanResponse.class);
-        }
-        return null;
+        return modelMapper.map(tableKanban, TableKanbanResponse.class);
+
+
     }
 
     @Transactional
     @Override
-    public TableKanbanResponse save(Long userid,Long groupId, String name) {
-        TableKanban tableKanban = tableKanbanValid.validCreateTableKanban(userid, groupId, name);
+    public TableKanbanResponse save(TableRequest tableRequest) {
+        System.out.println(tableRequest.getName() + tableRequest.getUserId() + tableRequest.getGroupId());
+        TableKanban tableKanban = tableKanbanValid.validCreateTableKanban(
+                tableRequest.getUserId(), tableRequest.getGroupId(), tableRequest.getName());
         tableKanbanRepository.save(tableKanban);
-        return null;
+        return modelMapper.map(tableKanban, TableKanbanResponse.class);
     }
 }
