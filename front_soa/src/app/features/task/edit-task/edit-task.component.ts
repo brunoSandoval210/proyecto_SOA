@@ -9,5 +9,9 @@ import { TaskComponent } from '../../../shared/utils/task/task.component';
   styleUrl: './edit-task.component.scss'
 })
 export class EditTaskComponent {
+
+  constructor(){
+    //cargar los datos de la tarea
+  }
   
 }
