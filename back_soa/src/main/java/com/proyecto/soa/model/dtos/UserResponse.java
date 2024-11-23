@@ -18,5 +18,7 @@ public class UserResponse {
     @NotNull
     private String email;
     @NotNull
-    Role role;
+    private Role role;
+    @NotNull
+    private Long tableId;
 }
