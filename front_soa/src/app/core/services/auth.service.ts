@@ -30,6 +30,15 @@ export class AuthService {
     return this.http.post<any>(`${this.url}/login`, { username, password });
   }
 
+  sendEmailForRecoveryPassword(email: string): Observable<any> {
+    return this.http.post<any>(`${this.url}/recuperarContrasena/${email}`, {});
+  }
+
+  changePassword(password: string, validPassword: string, code: string): Observable<any> {
+    const body = { password, validPassword, code };
+    return this.http.post<any>(`${this.url}/cambiarContrasena`, body);
+  }
+
   getAuthHeaders(): HttpHeaders {
     const token = this.token;
     return new HttpHeaders({

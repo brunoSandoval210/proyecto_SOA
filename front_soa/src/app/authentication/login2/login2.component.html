@@ -5,7 +5,8 @@
                 <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Taskly</h2>
                 <p class="mt-2 text-sm text-gray-600">
                     ¿No estás registrado?
-                    <span (click)="registerFromLogin()" class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">Registrate aquí</span>
+                    <span (click)="registerFromLogin()"
+                        class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">Registrate aquí</span>
                 </p>
             </div>
             <form class="space-y-6" [formGroup]="loginForm2" (ngSubmit)="onSubmit()">
@@ -26,7 +27,7 @@
 
                         <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
                             <div *ngIf="password.hasError('required')">
-                                Password is required.
+                                La contrasena es requerida.
                             </div>
                         </div>
 
@@ -50,14 +51,9 @@
 
                         <!-- <a [routerLink]="['../forgot-password']" class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">¿Has olvidado tu contraseña?</a> v-->
                         <a (click)="openForgotPasswordModal()"
-                            class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">¿Has olvidado tu contraseña?</a>
+                            class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">¿Has olvidado tu
+                            contraseña?</a>
                     </div>
-
-
-                    <!-- Modal olvidar contra -->
-                    <app-forgot-password *ngIf="isForgotPasswordModalOpen"
-                        (closeModal)="closeForgotPasswordModal()"></app-forgot-password>
-
                 </div>
 
                 <div>
@@ -70,3 +66,5 @@
         </div>
     </div>
 </div>
+<!-- Modal olvidar contra -->
+<app-forgot-password *ngIf="isForgotPasswordModalOpen" (closeModal)="closeForgotPasswordModal()"></app-forgot-password>

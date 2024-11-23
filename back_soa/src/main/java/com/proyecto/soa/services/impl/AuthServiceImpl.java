@@ -45,8 +45,9 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
+    @Transactional
     @Override
-    public String recuperarContrasena(String email) throws IOException, MessagingException {
+    public Map<String, String> recuperarContrasena(String email) throws IOException, MessagingException {
         passwordValid.validUser(email);
         Optional<User> user = userRepository.findByEmail(email);
         String code = randomCodeGenerator.generateRandomCode(5);
@@ -63,7 +64,9 @@ public class AuthServiceImpl implements AuthService {
         emailService.sendMail(email, "Recuperar contraseña", content);
 
 
-        return "Se ha enviado un correo a su dirección de correo electrónico";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Se ha enviado un correo a su dirección de correo electrónico");
+        return response;
     }
 
     @Transactional

@@ -9,15 +9,10 @@ import lombok.Setter;
 @Setter
 public class UserResponse {
 
-    @NotNull
     private Long id;
-    @NotNull
     private String name;
-    @NotNull
     private String lastname;
-    @NotNull
     private String email;
-    @NotNull
-    Role role;
+    private RoleResponse role;
 
 }
