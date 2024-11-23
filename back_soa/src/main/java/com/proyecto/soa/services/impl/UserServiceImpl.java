@@ -1,6 +1,7 @@
 package com.proyecto.soa.services.impl;
 
 import com.proyecto.soa.model.dtos.UserCreateRequest;
+import com.proyecto.soa.model.dtos.UserResponse;
 import com.proyecto.soa.model.dtos.UserUpdateRequest;
 import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
@@ -41,22 +42,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User save(UserCreateRequest user) {
-
-        User userSave = modelMapper.map(user, User.class);
-        userSave.setUsername(user.getEmail());
-
+    public UserResponse save(UserCreateRequest user) {
         //Validaciones
-        userValidation.validUserEmail(user.getEmail());
-
-        Role roleSave = roleRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("No se encontró el rol"));
-
-        userSave.setRole(roleSave);
-        userSave.setStatus(1);
-        userSave.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        return userRepository.save(userSave);
+        User userValid =userValidation.validUserEmail(user);
+        userValid=userRepository.save(userValid);
+        UserResponse userResponse=modelMapper.map(userValid, UserResponse.class);
+        userResponse.setRole(userValid.getRole().getName());
+        return userResponse;
     }
 
 

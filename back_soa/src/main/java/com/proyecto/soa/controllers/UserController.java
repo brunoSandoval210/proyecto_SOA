@@ -1,6 +1,7 @@
 package com.proyecto.soa.controllers;
 
 import com.proyecto.soa.model.dtos.UserCreateRequest;
+import com.proyecto.soa.model.dtos.UserResponse;
 import com.proyecto.soa.model.dtos.UserUpdateRequest;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.services.EmailService;
@@ -44,10 +45,17 @@ public class UserController {
 
     @PostMapping("registerUser")
     public ResponseEntity<?> create(@Valid @RequestBody UserCreateRequest user, BindingResult result) {
-        if(result.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+            }
+            UserResponse userResponse = userService.save(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
+
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error",e.getMessage()));
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
     }
 
     @DeleteMapping("user/{id}")
