@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-    private final UserService userService;
     private final TaskValid taskValid;
     private final ModelMapper modelMapper;
 

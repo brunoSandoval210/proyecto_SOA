@@ -90,13 +90,15 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
+    @Transactional
     @Override
     public AuthResponse login(LoginRequest loginRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsername(), loginRequest.getPassword()));
-        UserDetails user=userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+        UserDetails user=userRepository.findByEmail(loginRequest.getUsername()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthResponse.builder()
+                .message("Las credenciales son correctas")
                 .token(token)
                 .build();
     }
