@@ -23,7 +23,6 @@ import java.util.*;
 @RequestMapping("")
 public class UserController {
     private final UserService userService;
-    private final EmailService emailService;
 
     @GetMapping("users/{page}")
     public Page<User> listPageable(@PathVariable Integer page){

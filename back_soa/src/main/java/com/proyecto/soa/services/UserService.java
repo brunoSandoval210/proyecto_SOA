@@ -14,5 +14,5 @@ public interface UserService {
     Optional<User> findById(Long id);
     UserResponse save(UserCreateRequest user);
     void deleteById(Long id);
-    Optional<User> update(UserUpdateRequest user, Long id);
+    UserResponse update(UserUpdateRequest user, Long id);
 }

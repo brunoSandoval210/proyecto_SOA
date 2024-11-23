@@ -3,12 +3,10 @@ package com.proyecto.soa.services.impl;
 import com.proyecto.soa.model.dtos.UserCreateRequest;
 import com.proyecto.soa.model.dtos.UserResponse;
 import com.proyecto.soa.model.dtos.UserUpdateRequest;
-import com.proyecto.soa.model.entities.Role;
 import com.proyecto.soa.model.entities.User;
-import com.proyecto.soa.repositories.RoleRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.UserService;
-import com.proyecto.soa.validation.impl.UserValidation;
+import com.proyecto.soa.validation.UserValid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -23,10 +21,9 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
-    private final RoleRepository roleRepository;
-    private final UserValidation userValidation;
+    private final UserValid userValid;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,12 +39,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public UserResponse save(UserCreateRequest user) {
-        //Validaciones
-        User userValid =userValidation.validUserEmail(user);
-        userValid=userRepository.save(userValid);
-        UserResponse userResponse=modelMapper.map(userValid, UserResponse.class);
-        userResponse.setRole(userValid.getRole().getName());
+    public UserResponse save(UserCreateRequest userRequest) {
+
+        User user = userValid.validUser(userRequest);
+        user = userRepository.save(user);
+        UserResponse userResponse=modelMapper.map(user, UserResponse.class);
+        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        user.setStatus(1);
         return userResponse;
     }
 
@@ -60,17 +58,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Optional<User> update(UserUpdateRequest user, Long id) {
-        Optional<User> userOptional=userRepository.findById(id);
+    public UserResponse update(UserUpdateRequest userUpdateRequest, Long id) {
+        Optional<User> user=userRepository.findById(id);
 
-        if(userOptional.isPresent()){
-            User userUpdate=userOptional.get();
-            userUpdate.setName(user.getName());
-            userUpdate.setLastname(user.getLastname());
-            userUpdate.setEmail(user.getEmail());
-            return Optional.of(userRepository.save(userUpdate));
+        if(user.isPresent()){
+            User userUpdate= user.get();
+            userUpdate.setName(userUpdateRequest.getName());
+            userUpdate.setLastname(userUpdateRequest.getLastname());
+            userUpdate.setEmail(userUpdateRequest.getEmail());
+            return modelMapper.map(userUpdate, UserResponse.class);
         }
-        return Optional.empty();
+        return null;
     }
-
 }
