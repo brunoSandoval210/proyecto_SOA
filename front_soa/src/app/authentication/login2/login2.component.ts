@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-login2',
   standalone: true,
-  imports: [NgIf, ForgotPasswordComponent, RouterModule, ReactiveFormsModule],
+  imports: [NgIf, ForgotPasswordComponent, RouterModule, ReactiveFormsModule, CommonModule],
   templateUrl: './login2.component.html',
   styleUrl: './login2.component.scss'
 })

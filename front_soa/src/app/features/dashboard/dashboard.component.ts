@@ -15,7 +15,7 @@ import { EditTaskComponent } from "../task/edit-task/edit-task.component";
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ListComponent, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
+  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -35,46 +35,7 @@ export class DashboardComponent implements OnInit{
     console.log(this.isEditMode);
   }
 
-  boards: Board[] = [{
-                        id: 1,
-                        name: "Tablero SOA",
-                        lists: [{
-                                id: 1,
-                                name: "Por Hacer",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                  {
-                                    id: 2, title: "Tarea 2",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              },{
-                                id: 2,
-                                name: "En curso",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              },{
-                                id: 3,
-                                name: "Hecho",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                  {
-                                    id: 2, title: "Tarea 2",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              }]
-                      },]; // Define tu lista de tableros
+  boards: Board[] = []; // Define tu lista de tableros
                       
   selectedBoard: Board | null = null;
 
