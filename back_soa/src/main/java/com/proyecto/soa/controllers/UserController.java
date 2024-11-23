@@ -73,10 +73,8 @@ public class UserController {
         UserResponse optionalUser=userService.findById(id);
         if(optionalUser!=null){
             userService.deleteById(id);
-            //Se retorna un 204 porque no hay contenido
             return ResponseEntity.status((HttpStatus.NO_CONTENT)).build();
         }
-        //Se retorna un 404 porque no se encontro el usuario
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

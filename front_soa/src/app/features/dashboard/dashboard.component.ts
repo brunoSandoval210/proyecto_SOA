@@ -11,11 +11,14 @@ import { PopupComponent } from "../../shared/utils/popup/popup.component";
 import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
 import { TaskComponent } from "../task/task.component";
 import { EditTaskComponent } from "../task/edit-task/edit-task.component";
+import { TableKanbanService } from '../../core/services/table-kanban.service';
+import { AuthService } from '../../core/services/auth.service';
+import { TableComponent } from '../../shared/utils/table/table.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
+  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, EditTaskComponent,TableComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -23,16 +26,21 @@ export class DashboardComponent implements OnInit{
 
   isEditMode: boolean = false;
   selectedTask: any [] = [];
+  userId:number = 0;
+  table: { id: number; name: string; columns: any[] } | null = null;
 
-  constructor(private sharingDataService: SharingDataService){
+  constructor(private sharingDataService: SharingDataService,
+              private tableKanbanService:TableKanbanService,    
+              private authService:AuthService
+  ){
   }
 
   ngOnInit(): void {
     this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
       this.openModal(isOpen);
     });
-
-    console.log(this.isEditMode);
+    this.userId = this.authService.getUserId();
+    this.getTable();
   }
 
   boards: Board[] = []; // Define tu lista de tableros
@@ -78,6 +86,18 @@ export class DashboardComponent implements OnInit{
   
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
+  }
+
+  getTable() {
+    this.tableKanbanService.getTablesByUser(this.userId).subscribe({
+      next: (data: any) => {
+        this.table = data;
+        console.log('Tablero Kanban:', this.table);
+      },
+      error: (err) => {
+        console.error('Error al obtener el tablero:', err);
+      }
+    });  
   }
 
 }

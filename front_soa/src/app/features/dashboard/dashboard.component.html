@@ -55,9 +55,9 @@
       </header>
 
       <!-- Contenedor de Listas -->
-      <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100">
+      <!-- <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100"> -->
         <!-- Lista: Tareas por Asignar -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Tareas por asignar</h2>
             <button class="text-gray-400 p-1">
@@ -65,10 +65,10 @@
             </button>
           </div>
           <app-task></app-task>
-        </div>
+        </div> -->
 
         <!-- Lista: Pendiente -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Pendiente</h2>
             <button class="text-gray-400 p-1">
@@ -76,10 +76,10 @@
             </button>
           </div>
           <app-task></app-task>
-        </div>
+        </div> -->
 
         <!-- Lista: En Proceso -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">En Proceso</h2>
             <button class="text-gray-400 p-1">
@@ -87,10 +87,10 @@
             </button>
           </div>
           <app-task></app-task>
-        </div>
+        </div> -->
 
         <!-- Lista: Finalizadas -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Finalizadas</h2>
             <button class="text-gray-400 p-1">
@@ -99,7 +99,8 @@
           </div>
           <app-task></app-task>
         </div>
-      </div>
+      </div> -->
+      <app-table [table]="table"></app-table>
     </main>
   </div>
 

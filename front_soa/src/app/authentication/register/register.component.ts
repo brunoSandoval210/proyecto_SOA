@@ -32,11 +32,7 @@ export class RegisterComponent {
 
   // Método para registrar un usuario
   registerUser() {
-    if (this.registerForm.invalid) {
-      alert('Por favor, complete todos los campos correctamente.');
-      return;
-    }
-  
+
     const userPayload = {
       name: this.registerForm.value.name,
       lastname: this.registerForm.value.lastname,
@@ -58,7 +54,7 @@ export class RegisterComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error al registrar',
-          text: 'No se pudo registrar el usuario. Por favor, intenta nuevamente.'
+          text: 'No se pudo registrar el usuario. Por favor, intenta nuevamente.' + error.message
         });
       }
     });
