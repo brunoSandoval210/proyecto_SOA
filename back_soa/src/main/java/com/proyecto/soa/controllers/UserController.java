@@ -71,11 +71,12 @@ public class UserController {
 
     @PutMapping("user/{id}")
     public ResponseEntity<User> update (@PathVariable Long id, @RequestBody UserUpdateRequest user){
-        Optional<User> userUpdate = userService.update(user, id);
-        if (userUpdate.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(userUpdate.orElseThrow());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+//        Optional<User> userUpdate = userService.update(user, id);
+//        if (userUpdate.isPresent()){
+//            return ResponseEntity.status(HttpStatus.OK).body(userUpdate.orElseThrow());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+        return null;
     }
 }
