@@ -39,8 +39,12 @@ public class Authcontroller {
     }
 
     @PostMapping("/cambiarContrasena")
-    public ResponseEntity<?> cambiarContrasena(@RequestBody PasswordUpdateRquest password) {
-        return ResponseEntity.ok(authService.cambiarContrasena(
-                password, password.getToken(), password.getCode()));
+    public ResponseEntity<?> cambiarContrasena(@Valid @RequestBody PasswordUpdateRquest password, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+        return authService.cambiarContrasena(password);
     }
 }
