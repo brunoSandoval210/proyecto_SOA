@@ -11,11 +11,14 @@ import { PopupComponent } from "../../shared/utils/popup/popup.component";
 import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
 import { TaskComponent } from "../task/task.component";
 import { EditTaskComponent } from "../task/edit-task/edit-task.component";
+import { BoardComponent } from "../board/board.component";
+import { BoardService } from '../../core/services/board.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
+  imports: [CommonModule, DragDropModule, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent, BoardComponent],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -24,7 +27,9 @@ export class DashboardComponent implements OnInit{
   isEditMode: boolean = false;
   selectedTask: any [] = [];
 
-  constructor(private sharingDataService: SharingDataService){
+  constructor(private sharingDataService: SharingDataService,
+    private boardService: BoardService,
+  ){
   }
 
   ngOnInit(): void {
@@ -78,6 +83,10 @@ export class DashboardComponent implements OnInit{
   
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
+  }
+
+  getBoards(): void{
+    this.boardService.getBoards(2).subscribe(response: any);
   }
 
 }
