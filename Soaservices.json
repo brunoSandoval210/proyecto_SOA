@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "8986242d-1efa-45de-b3ef-421cc731eabd",
+		"name": "SoaCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29623058"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/auth/login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ronald08@gmail.com\",\r\n    \"password\": \"Estrada9\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/table/save",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyb25hbGQwOEBnbWFpbC5jb20iLCJpYXQiOjE3MzIzMzg5MDgsImV4cCI6MTczMjQyNTMwOH0.tocoAN_49I7ou-EEAInSrFoXFyhGAvYmefeBuaDuNcg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" :\"tabla prueba\",\r\n    \"userId\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/table/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"table",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/table/user/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicnVuby5zYW5kb3ZhbDIxMEBnbWFpbC5jb20iLCJpYXQiOjE3MzIzMzEzMDksImV4cCI6MTczMjQxNzcwOX0.lAsugeut-HA8j1KpF_Q7uqq10eMApR6qMCDtktpYMps",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/table/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"table",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/task/save",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJicnVuby5zYW5kb3ZhbDIxMEBnbWFpbC5jb20iLCJpYXQiOjE3MzIzMzM1MjIsImV4cCI6MTczMjQxOTkyMn0.IimrHQFmsVMGPBMgwiFM3gpE8ojFfP34hKti7dJ2E4U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n  {\r\n    \"column\":4,\r\n    \"title\": \"tarea de prueba\",\r\n    \"descripcion\": \"probando si funciona la tarea\",\r\n    \"priority\": 1,\r\n    \"limitDate\":\"2024-12-24\",\r\n    \"user\":1\r\n  }   ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/task/save",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"task",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/registerUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"ronald\",\r\n    \"lastname\":\"estrada\",\r\n    \"email\":\"ronald08@gmail.com\",\r\n    \"password\":\"Estrada9\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/registerUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"registerUser"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -34,7 +34,7 @@ public class User extends Maintenance implements UserDetails{
     @Column(name = "password")
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rol_id")
     private Role role;
 

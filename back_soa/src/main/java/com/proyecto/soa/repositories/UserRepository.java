@@ -22,7 +22,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
     //Actualizar una contrasena
     @Modifying
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :userId")
-    @Transactional
     void updatePassword(String password, Long userId);
+
+    boolean existsByEmail(String email);
 
 }
