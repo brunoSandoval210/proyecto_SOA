@@ -1,36 +1,38 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Task } from '../models/task.model';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  private apiUrl = 'http://localhost:8080/api/tasks'; // URL del backend
+  private apiUrl = 'http://localhost:8080/task'; // URL del backend
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
-  // Obtener todos los Users
-  getUsers(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+  getToken() {
+    return this.authService.token;
   }
 
-  // Crear un nuevo User
-  createUser(Task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, Task);
+  // Configurar los encabezados de autorización
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
   }
 
-  // Actualizar un User existente
-  updateUser(id: number, Task: Task): Observable<Task> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.put<Task>(url, Task);
+  // Método para crear una tarea
+  createTask(taskPayload: { column: number; title: string; descripcion: string; priority: number; limitDate: string; user: number }): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.apiUrl}/save`;
+    return this.http.post<any>(url, taskPayload, { headers });
   }
 
-  // Eliminar un User por su ID
-  deleteUser(id: number): Observable<void> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.delete<void>(url);
-  }
 }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TaskComponent } from '../task/task.component';
+import { SharingDataService } from '../../services/sharing-data.service';
 
 @Component({
   selector: 'app-column',
@@ -13,7 +14,11 @@ export class ColumnComponent {
   @Input() title: string = '';
   @Input() tasks: any[] = [];
 
+  constructor(private sharingDataService: SharingDataService){
+
+  }
+
   addTask() {
-    console.log('Agregar tarea a la columna:', this.title);
+    this.sharingDataService.createTask.emit(true);
   }
 }
