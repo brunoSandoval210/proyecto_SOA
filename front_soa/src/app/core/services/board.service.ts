@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from '../../authentication/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -31,11 +31,11 @@ export class BoardService {
     }
 
     getUserId() {
-      return this.authService.getUser;
+      return this.authService.getUserId;
     }
   
     getToken() {
-      return this.authService.getToken;
+      return this.authService.token;
     }
 
     getAuthHeaders(): HttpHeaders {

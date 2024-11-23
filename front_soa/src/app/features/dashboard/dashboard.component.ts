@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit{
     console.log(this.isEditMode);
   }
 
-  boards: Board[] = []; // Define tu lista de tableros
+   // Define tu lista de tableros
                       
   selectedBoard: Board | null = null;
 
