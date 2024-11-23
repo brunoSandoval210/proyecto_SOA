@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "role")
-public class Role {
+public class Role extends Maintenance{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
