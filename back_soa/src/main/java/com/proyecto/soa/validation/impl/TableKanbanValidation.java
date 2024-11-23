@@ -37,18 +37,22 @@ public class TableKanbanValidation implements TableKanbanValid {
 
         //Crear columnas por defectos
         ColumnTable column1=new ColumnTable();
-        column1.setName("Por hacer");
+        column1.setName("Por asignar");
         column1.setTableKanban(tableKanban);
 
         ColumnTable column2=new ColumnTable();
-        column2.setName("En progreso");
+        column2.setName("Pendiente");
         column2.setTableKanban(tableKanban);
 
         ColumnTable column3=new ColumnTable();
-        column3.setName("Hecho");
+        column3.setName("En proceso");
         column3.setTableKanban(tableKanban);
 
-        tableKanban.setColumnsTable(List.of(column1,column2,column3));
+        ColumnTable column4=new ColumnTable();
+        column4.setName("Finalizado");
+        column4.setTableKanban(tableKanban);
+
+        tableKanban.setColumnsTable(List.of(column1,column2,column3,column4));
 
         return tableKanban;
     }

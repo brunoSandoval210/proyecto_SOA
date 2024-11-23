@@ -1,5 +1,7 @@
 package com.proyecto.soa.model.dtos;
 
+import com.proyecto.soa.model.entities.Role;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,16 +10,10 @@ import lombok.Setter;
 public class UserResponse {
 
     private Long id;
-
     private String name;
-
     private String lastname;
-
     private String email;
-
-    private String role;
-    private String roleId;
-
-    private String username;
+    private RoleResponse role;
+    private TableKanbanResponse tableKanban;
 
 }

@@ -11,11 +11,24 @@ import { PopupComponent } from "../../shared/utils/popup/popup.component";
 import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
 import { TaskComponent } from "../task/task.component";
 import { EditTaskComponent } from "../task/edit-task/edit-task.component";
+import { TableKanbanService } from '../../core/services/table-kanban.service';
+import { AuthService } from '../../core/services/auth.service';
+import { TableComponent } from '../../shared/utils/table/table.component';
+import { AddTaskComponent } from '../task/add-task/add-task.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, DragDropModule, ListComponent, HeaderComponent, PopupComponent, ShareWithUsersComponent, TaskComponent, EditTaskComponent],
+  imports: [
+    CommonModule, 
+    DragDropModule, 
+    HeaderComponent, 
+    PopupComponent, 
+    ShareWithUsersComponent, 
+    EditTaskComponent,
+    TableComponent,
+    AddTaskComponent
+  ],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -23,58 +36,30 @@ export class DashboardComponent implements OnInit{
 
   isEditMode: boolean = false;
   selectedTask: any [] = [];
+  userId:number = 0;
+  table: { id: number; name: string; columns: any[] } | null = null;
+  createTask: boolean = false;
+  addUser:boolean = false;
 
-  constructor(private sharingDataService: SharingDataService){
+  constructor(private sharingDataService: SharingDataService,
+              private tableKanbanService:TableKanbanService,    
+              private authService:AuthService
+  ){
   }
 
   ngOnInit(): void {
     this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-      this.openModal(isOpen);
+      this.openModal(isOpen,false,false);
     });
-
-    console.log(this.isEditMode);
+    this.userId = this.authService.getUserId();
+    this.getTable();
+    this.sharingDataService.createTask.subscribe((isCreateTask: boolean) => {
+      this.openModal(false,isCreateTask,false);
+    });
+    
   }
 
-  boards: Board[] = [{
-                        id: 1,
-                        name: "Tablero SOA",
-                        lists: [{
-                                id: 1,
-                                name: "Por Hacer",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                  {
-                                    id: 2, title: "Tarea 2",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              },{
-                                id: 2,
-                                name: "En curso",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              },{
-                                id: 3,
-                                name: "Hecho",
-                                tasks: [
-                                  {
-                                    id: 1, title: "Tarea 1",
-                                    assignedTo: undefined
-                                  },
-                                  {
-                                    id: 2, title: "Tarea 2",
-                                    assignedTo: undefined
-                                  },
-                                ]
-                              }]
-                      },]; // Define tu lista de tableros
+  boards: Board[] = []; // Define tu lista de tableros
                       
   selectedBoard: Board | null = null;
 
@@ -110,13 +95,32 @@ export class DashboardComponent implements OnInit{
     }
   }
 
-  openModal(editMode:boolean = false): void {
+  openModal(editMode: boolean = false, createTask: boolean = false, addUse:boolean = false): void {
     this.sharingDataService.onOpenCloseModal.emit(true);
     this.isEditMode = editMode;
+    this.createTask = createTask;
+    this.addUser = addUse;
   }
+
+  addUsers(): void {
+    this.openModal(false, false, true);
+  }
+
   
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
+  }
+
+  getTable() {
+    this.tableKanbanService.getTablesByUser(this.userId).subscribe({
+      next: (data: any) => {
+        this.table = data;
+        console.log('Tablero Kanban:', this.table);
+      },
+      error: (err) => {
+        console.error('Error al obtener el tablero:', err);
+      }
+    });  
   }
 
 }

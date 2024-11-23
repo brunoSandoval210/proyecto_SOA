@@ -1,22 +1,25 @@
 import { Component } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { AuthService } from '../auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import Swal from 'sweetalert2';
+import { AuthService } from '../../core/services/auth.service';
+
 
 @Component({
   selector: 'app-login2',
   standalone: true,
-  imports: [NgIf, ForgotPasswordComponent, RouterModule, ReactiveFormsModule],
+  imports: [NgIf, ForgotPasswordComponent, RouterModule, ReactiveFormsModule, CommonModule],
   templateUrl: './login2.component.html',
   styleUrl: './login2.component.scss'
 })
 export class Login2Component {
 
+  
   passwordFieldType: string = 'password';
   loginForm2: FormGroup;
-
+  
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -29,20 +32,34 @@ export class Login2Component {
   }
 
   onSubmit() {
-    if (this.loginForm2.invalid) {
-      alert('Por favor, ingrese usuario y contraseña');
-      return;
-    }
-    const { username, password } = this.loginForm2.value; // Desestructuración para obtener valores
-    this.authService.login({ username, password }).subscribe({
-      next: (response: any) => {
-        this.authService.setToken(response.token);
-        this.router.navigate(['./features/dashboard']);
+    const { username, password } = this.loginForm2.value;
+    this.authService.loginUser({ username, password }).subscribe(
+      response => {
+        if (response && response.token) {
+          this.authService.token = response.token;
+          Swal.fire({
+            icon: 'success',
+            title: 'Inicio de sesión exitoso',
+            text: 'Bienvenido de nuevo'
+          });
+          this.router.navigate(['/dashboard']); // Redirige al dashboard u otra ruta
+        } else {
+          console.error('Invalid login response', response);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al iniciar sesión',
+            text: 'Respuesta de inicio de sesión inválida'
+          });
+        }
       },
-      error: (err) => {
-        alert('Error en el inicio de sesión. Verifique sus credenciales.');
+      error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al iniciar sesión',
+          text: 'Usuario o contraseña incorrectos'
+        });
       }
-    });
+    );
   }
 
   togglePasswordVisibility() {
@@ -68,12 +85,12 @@ export class Login2Component {
   }
 
   loginWithOAuth() {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    // window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
   loginWithoutCredentials() {
-    this.router.navigate(['../../core/features/dashboard/dashboard']);
+    // this.router.navigate(['../../core/features/dashboard/dashboard']);
   }
-  
+
   get email() {
     return this.loginForm2.controls['email'];
   }

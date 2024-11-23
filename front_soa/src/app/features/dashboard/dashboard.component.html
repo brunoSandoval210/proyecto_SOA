@@ -5,14 +5,29 @@
   </header>
   <div class="dashboard-container flex h-screen bg-gray-100">
     <!-- Barra Lateral Izquierda -->
-    <aside class="sidebar w-60 bg-gray-800 text-gray-400 flex flex-col p-6">
-      <h2 class="text-2xl font-semibold mb-4 pb-4 border-b border-gray-700">Espacios de trabajo</h2>
+    <aside class="sidebar w-60 bg-gray-800 text-gray-400 flex flex-col p-5">
+      <h2 class="text-2xl mb-4 pb-4 border-b border-gray-700">Espacios de trabajo</h2>
       <div class="workspace flex-1">
-        <p class="text-lg font-medium mb-3">Tableros</p>
+        <p class="text-lg font-medium mb-3">Mis Tableros</p>
         <ul class="space-y-2">
           <li *ngFor="let board of boards" (click)="selectBoard(board)"
             class="cursor-pointer p-2 bg-gray-800 hover:bg-gray-600">
             {{ board.name }}
+          </li>
+        </ul>
+      </div>
+      <div class="workspace flex-1">
+        <p class="text-lg font-medium mb-3">Tableros Compartidos</p>
+        <ul class="space-y-2">
+          <!-- <li *ngFor="let board of boards" (click)="selectBoard(board)"
+            class="cursor-pointer p-2 bg-gray-800 hover:bg-gray-600">
+            {{ board.name }}
+          </li> -->
+          <li >
+            Tablero 2
+          </li>
+          <li >
+            Tablero 3
           </li>
         </ul>
       </div>
@@ -24,7 +39,7 @@
     <!-- Área del Tablero Seleccionado -->
     <main class="board-container flex-1 p-0">
       <!-- Encabezado del Tablero -->
-      <header class="flex justify-between items-center bg-gray-400 text-gray-800 py-3 px-6 ">
+      <header class="flex justify-between items-center bg-gray-300 text-gray-800 py-3 px-6 ">
         <!-- Información del Tablero -->
         <div class="flex items-center space-x-4">
           <!-- Nombre del Tablero -->
@@ -32,7 +47,7 @@
         </div>
         <div class="flex items-center space-x-4">
           <!-- Nombre del Tablero -->
-          <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white" (click)="openModal()">Share</button>
+          <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white" (click)="addUsers()">Share</button>
         </div>
 
 
@@ -40,9 +55,9 @@
       </header>
 
       <!-- Contenedor de Listas -->
-      <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100">
+      <!-- <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100"> -->
         <!-- Lista: Tareas por Asignar -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Tareas por asignar</h2>
             <button class="text-gray-400 p-1">
@@ -50,49 +65,51 @@
             </button>
           </div>
           <app-task></app-task>
-        </div>
+        </div> -->
 
         <!-- Lista: Pendiente -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Pendiente</h2>
             <button class="text-gray-400 p-1">
               +
             </button>
           </div>
-          <div class="bg-red-100 rounded shadow p-2 mb-2 text-sm">Tarea 1</div>
-          <div class="bg-red-100 rounded shadow p-2 mb-2 text-sm">Tarea 2</div>
-        </div>
+          <app-task></app-task>
+        </div> -->
 
         <!-- Lista: En Proceso -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">En Proceso</h2>
             <button class="text-gray-400 p-1">
               +
             </button>
           </div>
-          <div class="bg-yellow-100 rounded shadow p-2 mb-2 text-sm">Tarea 3</div>
-        </div>
+          <app-task></app-task>
+        </div> -->
 
         <!-- Lista: Finalizadas -->
-        <div class="bg-white rounded-lg shadow p-4 flex flex-col">
+        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
           <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold text-gray-800">Finalizadas</h2>
             <button class="text-gray-400 p-1">
               +
             </button>
           </div>
-          <div class="bg-green-100 rounded shadow p-2 mb-2 text-sm">Tarea 4</div>
+          <app-task></app-task>
         </div>
-      </div>
+      </div> -->
+      <app-table [table]="table"></app-table>
     </main>
   </div>
 
-  <app-popup [title]="isEditMode ? 'Editar Tarea' : 'Compartir'">
-    @if(isEditMode) {
+  <app-popup>
+    @if(createTask){
+      <app-add-task></app-add-task>
+    }@if(isEditMode){
       <app-edit-task></app-edit-task>
-    } @else {
+    }@if(addUser){
       <app-share-with-users></app-share-with-users>
     }
   </app-popup>

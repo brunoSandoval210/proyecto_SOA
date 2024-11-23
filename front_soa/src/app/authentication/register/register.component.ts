@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../core/services/user.service';
 import { User } from '../../core/models/user.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -14,47 +15,48 @@ import { User } from '../../core/models/user.model';
 export class RegisterComponent {
 
   registerForm: FormGroup;
-  user: User | undefined;  // Instancia un nuevo objeto Usuario para enlazarlo con el formulario
 
   constructor(
     private userService: UserService,
-    private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder
   ) {
     this.registerForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      dni: ['', Validators.required],
+      name: ['', Validators.required], // Cambiado de "username" a "name"
+      lastname: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
+    
   }
 
   // Método para registrar un usuario
   registerUser() {
 
-    if (this.registerForm.invalid) {
-      alert('Por favor, ingrese usuario y contraseña');
-      return;
-    }
-
-    //this.user = this.registerForm.value;  // Actualiza el objeto user con los valores del formulario
-
-    // Asigna los valores del formulario al objeto `user` con la estructura de `User`
-    this.user = this.registerForm.value as User;  // Casting para asignar la estructura de `User`
-
-    this.userService.createUser(this.user).subscribe(
-      (response) => {
-        console.log('Usuario registrado con éxito:', response);
-        this.router.navigate(['/success']);  // Puedes redirigir a una página de éxito si lo deseas
+    const userPayload = {
+      name: this.registerForm.value.name,
+      lastname: this.registerForm.value.lastname,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password
+    };
+  
+    this.userService.createUser(userPayload).subscribe({
+      next: (response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Usuario registrado',
+          text: 'El usuario ha sido registrado exitosamente.'
+        });
+        this.router.navigate(['/login']);
+        this.registerForm.reset();
       },
-      (error) => {
-        console.error('Error al registrar el usuario:', error);
-        // Manejo de errores
+      error: (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al registrar',
+          text: 'No se pudo registrar el usuario. Por favor, intenta nuevamente.' + error.message
+        });
       }
-    );
-
+    });
   }
 }

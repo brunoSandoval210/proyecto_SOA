@@ -12,11 +12,17 @@ export class SharingDataService {
 
   private _changeEditTask = new EventEmitter<any>();
 
+  private _createTask = new EventEmitter<any>();
+
   get onOpenCloseModal(): EventEmitter<boolean> {
     return this._onOpenCloseModal;
   }
 
   get changeEditTask(): EventEmitter<any> {
     return this._changeEditTask;
+  }
+
+  get createTask(): EventEmitter<any> {
+    return this._createTask;
   }
 }
