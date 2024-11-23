@@ -86,7 +86,7 @@ export class DashboardComponent implements OnInit{
   }
 
   getBoards(): void{
-    this.boardService.getBoards(2).subscribe(response: any);
+    //this.boardService.getBoards(2).subscribe(response: any);
   }
 
 }
