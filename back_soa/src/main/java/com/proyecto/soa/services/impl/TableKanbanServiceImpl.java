@@ -43,4 +43,6 @@ public class TableKanbanServiceImpl implements TableKanbanService {
         tableKanbanRepository.save(tableKanban);
         return modelMapper.map(tableKanban, TableKanbanResponse.class);
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.proyecto.soa.services.impl;
 import com.proyecto.soa.model.dtos.*;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.UserRepository;
+import com.proyecto.soa.services.TableKanbanService;
 import com.proyecto.soa.services.TaskService;
 import com.proyecto.soa.services.UserService;
 import com.proyecto.soa.validation.UserValid;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
     private final UserValid userValid;
     private final PasswordEncoder passwordEncoder;
+    private final TableKanbanService tableKanbanService;
 
 
     @Transactional(readOnly = true)
@@ -48,10 +50,18 @@ public class UserServiceImpl implements UserService {
     public UserResponse save(UserCreateRequest userRequest) {
 
         User user = userValid.validUser(userRequest);
-        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setStatus(1);
         userRepository.save(user);
+
+        //Crear tabla Kanban para el usuario
+        TableRequest tableRequest = new TableRequest();
+        tableRequest.setUserId(user.getId());
+        tableRequest.setName("Tablero de " + user.getName());
+        TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableRequest);
+
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        userResponse.setTableId(tableKanbanResponse.getId());
 
         return userResponse;
     }
