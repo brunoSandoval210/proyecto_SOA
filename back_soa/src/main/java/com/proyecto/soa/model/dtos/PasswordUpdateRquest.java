@@ -22,8 +22,5 @@ public class PasswordUpdateRquest {
     private String validPassword;
 
     @NotNull
-    private String token;
-
-    @NotNull
     private String code;
 }

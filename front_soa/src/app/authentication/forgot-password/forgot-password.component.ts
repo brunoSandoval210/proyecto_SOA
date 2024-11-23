@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { NgIf } from '@angular/common';  // Importa CommonModule
 import { FormsModule } from '@angular/forms';  // Importa FormsModule para ngModel
+import { AuthService } from '../../core/services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-forgot-password',
@@ -13,47 +15,90 @@ export class ForgotPasswordComponent {
   email: string = '';  // Para almacenar el correo electrónico
   isEmailSent: boolean = false;  // Controla si ya se ha enviado el correo
   isPasswordUpdated: boolean = false;  // Controla si la contraseña fue actualizada
+  code: string[] = ['', '', '', '', ''];
+  newPassword: string = '';
+  confirmPassword: string = '';
 
-  // Variables para los cuadros de texto del código
-  code: string[] = ['', '', '', ''];
+  constructor(
+    private authService: AuthService
+  ){
+
+  }
+
 
   // Usamos ViewChildren para obtener todas las referencias a los inputs
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
 
-  // Enviar el correo
   onSubmitEmail() {
     if (this.email) {
-      console.log('Correo enviado a:', this.email);
-      this.isEmailSent = true;  // Cambia a la vista del código de verificación
+      this.authService.sendEmailForRecoveryPassword(this.email).subscribe({
+        next: () => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Correo enviado',
+            text: 'Revisa tu correo electrónico para obtener el código de verificación.',
+          });
+          this.isEmailSent = true;
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error al enviar el correo',
+            text: 'No se pudo enviar el correo. Por favor, verifica tu dirección e inténtalo nuevamente.',
+          });
+          console.error(err);
+        },
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Correo requerido',
+        text: 'Por favor, ingresa tu correo electrónico.',
+      });
     }
   }
 
   // Enviar el código de verificación
   onSubmitCode() {
-    const fullCode = this.code.join('');  // Unir los valores de los cuadros de texto
-    if (fullCode.length === 4) {
-      console.log('Código ingresado:', fullCode);
-      this.isPasswordUpdated = true;  // Cambiar a la vista de confirmación
+    const fullCode = this.code.join(''); // Unir los valores de los cuadros de texto
+    if (fullCode.length === 5 && this.newPassword === this.confirmPassword) {
+      this.authService
+        .changePassword(this.newPassword, this.confirmPassword, fullCode)
+        .subscribe({
+          next: () => {
+            this.isPasswordUpdated = true; // Cambiar a la vista de confirmación
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al actualizar la contraseña',
+              text: 'El código de verificación o la nueva contraseña son inválidos. Por favor, inténtalo de nuevo.',
+            });
+            console.error(err);
+          },
+        });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Datos incompletos',
+        text: 'Asegúrate de que el código sea correcto y las contraseñas coincidan.',
+      });
     }
-    // para quitar el focus
-    setTimeout(() => {
-      const activeElement = document.activeElement as HTMLElement;
-      activeElement?.blur();  // Desenfocar el elemento activo
-    }, 0);
   }
-  
 
   // Cambiar el enfoque entre los cuadros de texto
   onInputChange(event: any, index: number) {
     const value = event.target.value;
-    if (value.length === 1 && index < 3) {
-      // Mover el enfoque al siguiente cuadro si hay un valor y no es el último
+  
+    // Mueve el foco solo si el input actual tiene valor y no es el último
+    if (value.length === 1 && index < 4) {
       const nextInput = this.inputs.toArray()[index + 1];
       if (nextInput) {
         nextInput.nativeElement.focus();
       }
     }
   }
+  
 
   // Cerrar el modal
   onClose() {
