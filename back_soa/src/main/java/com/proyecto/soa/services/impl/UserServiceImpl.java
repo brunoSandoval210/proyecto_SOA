@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         User user = userValid.validUser(userRequest);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setStatus(1);
-        userRepository.save(user);
+        user= userRepository.save(user);
 
         //Crear tabla Kanban para el usuario
         TableRequest tableRequest = new TableRequest();
@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
         TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableRequest);
 
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-        userResponse.setTableId(tableKanbanResponse.getId());
+        userResponse.setTableKanban(tableKanbanResponse);
 
         return userResponse;
     }

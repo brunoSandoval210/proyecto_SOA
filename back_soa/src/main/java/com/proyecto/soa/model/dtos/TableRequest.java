@@ -9,9 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TableRequest {
-    @NotNull
     private String name;
-    @NotNull
     private Long userId;
     private Long groupId;
 }
