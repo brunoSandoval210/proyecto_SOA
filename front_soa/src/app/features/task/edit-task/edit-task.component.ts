@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TaskComponent } from '../task.component';
+import { TaskComponent } from '../../../shared/utils/task/task.component';
 
 @Component({
   selector: 'app-edit-task',
