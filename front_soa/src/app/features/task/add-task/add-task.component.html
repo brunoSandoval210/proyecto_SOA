@@ -1,1 +1,29 @@
-<p>add-task works!</p>
+<div class="bg-white rounded-lg p-6 shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Crear nueva tarea</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="title">Título</label>
+        <input [(ngModel)]="title" id="title" name="title" type="text" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500" required />
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="descripcion">Descripción</label>
+        <textarea [(ngModel)]="descripcion" id="descripcion" name="descripcion" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="priority">Prioridad</label>
+        <select [(ngModel)]="priority" id="priority" name="priority" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
+          <option value="1">Baja</option>
+          <option value="2">Media</option>
+          <option value="3">Alta</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700" for="limitDate">Fecha Límite</label>
+        <input [(ngModel)]="limitDate" id="limitDate" name="limitDate" type="date" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500" required />
+      </div>
+      <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700">
+        Crear Tarea
+      </button>
+    </form>
+  </div>
+  
