@@ -1,0 +1,70 @@
+<div class="bg-gray-50">
+    <div class="flex min-h-screen items-center justify-center">
+        <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+            <div class="text-center">
+                <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Taskly</h2>
+                <p class="mt-2 text-sm text-gray-600">
+                    ¿No estás registrado?
+                    <span (click)="registerFromLogin()"
+                        class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">Registrate aquí</span>
+                </p>
+            </div>
+            <form class="space-y-6" [formGroup]="loginForm2" (ngSubmit)="onSubmit()">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="email-address" class="sr-only">Email o ID</label>
+                        <input id="email-address" formControlName="username" name="email" type="email"
+                            autocomplete="email" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 focus:z-10 sm:text-sm"
+                            placeholder="Email o ID">
+                    </div>
+                    <div class="relative">
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" formControlName="password" name="password" [type]="passwordFieldType"
+                            autocomplete="current-password" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-cyan-500 focus:border-cyan-500 focus:z-10 sm:text-sm"
+                            placeholder="Contraseña">
+
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="text-danger">
+                            <div *ngIf="password.hasError('required')">
+                                La contrasena es requerida.
+                            </div>
+                        </div>
+
+                        <button type="button" (click)="togglePasswordVisibility()"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path *ngIf="passwordFieldType === 'password'" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M13.875 18.825A10.009 10.009 0 0012 19c-5.523 0-10-4.477-10-10S6.477 1 12 1c5.523 0 10 4.477 10 10a9.974 9.974 0 01-.618 3.575M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path *ngIf="passwordFieldType === 'text'" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M15 13a3 3 0 01-6 0m12 0a9.974 9.974 0 00-.618-3.575M13.875 18.825A10.009 10.009 0 0112 19c-5.523 0-10-4.477-10-10S6.477 1 12 1c5.523 0 10 4.477 10 10a9.974 9.974 0 01-.618 3.575" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+
+                        <!-- <a [routerLink]="['../forgot-password']" class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">¿Has olvidado tu contraseña?</a> v-->
+                        <a (click)="openForgotPasswordModal()"
+                            class="font-medium text-cyan-600 hover:text-cyan-500 cursor-pointer">¿Has olvidado tu
+                            contraseña?</a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500">
+                        Iniciar sesión
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal olvidar contra -->
+<app-forgot-password *ngIf="isForgotPasswordModalOpen" (closeModal)="closeForgotPasswordModal()"></app-forgot-password>

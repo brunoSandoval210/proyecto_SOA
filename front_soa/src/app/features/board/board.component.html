@@ -1,0 +1,6 @@
+<ul class="space-y-2">
+    <li *ngFor="let board of boards" (click)="selectBoard(board)"
+        class="cursor-pointer p-2 bg-gray-800 hover:bg-gray-600">
+        {{ board.name }}
+    </li>
+</ul>

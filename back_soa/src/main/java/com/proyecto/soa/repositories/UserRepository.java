@@ -19,13 +19,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
     //Busca un usuario por su nombre de usuario
     Optional<User> findByUsername(String username);
-    //Busca un usuario por su DNI
-    Optional<User> findByDni(String dni);
-
     //Actualizar una contrasena
     @Modifying
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :userId")
-    @Transactional
     void updatePassword(String password, Long userId);
+
+    boolean existsByEmail(String email);
 
 }

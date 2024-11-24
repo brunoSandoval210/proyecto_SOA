@@ -1,0 +1,9 @@
+<div class="bg-gray-100 rounded-md p-2 mb-2">
+    <h3 class="text-sm font-medium">{{ task.title }}</h3>
+    <button class="opacity-0 hover:opacity-100 transition-opacity duration-50" (click)="editTask()">
+      <i class="fa-regular fa-pen-to-square text-gray-600"></i>
+    </button>
+    <p class="text-xs text-gray-600">{{ task.descripcion }}</p>
+    <p class="text-xs text-gray-500">Prioridad: {{ task.priority }}</p>
+    <p class="text-xs text-gray-500">Fecha límite: {{ task.limitDate }}</p>
+  </div>
