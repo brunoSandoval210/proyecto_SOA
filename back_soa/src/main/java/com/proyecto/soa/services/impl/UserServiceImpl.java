@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -43,6 +44,14 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
 
         return user.map(value -> modelMapper.map(value, UserResponse.class)).orElse(null);
+    }
+
+    @Override
+    public List<UserResponse> findByEmail(String email) {
+
+        Optional<User> user = userRepository.findByEmail(email);
+
+        return user.map(value -> List.of(modelMapper.map(value, UserResponse.class))).orElse(null);
     }
 
     @Transactional

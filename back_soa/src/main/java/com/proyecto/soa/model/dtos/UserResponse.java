@@ -1,7 +1,6 @@
 package com.proyecto.soa.model.dtos;
 
-import com.proyecto.soa.model.entities.Role;
-import jakarta.validation.constraints.NotNull;
+
 import lombok.Getter;
 import lombok.Setter;
 

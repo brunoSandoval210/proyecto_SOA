@@ -13,9 +13,7 @@ public class GroupResponse {
     private Long id;
     @NotNull
     private String name;
-    @NotNull
-    private Long tableId;
-    @NotNull
+    private TableKanbanResponse tableKanbanResponse;
     private List<UserResponse> users;
 
 }
