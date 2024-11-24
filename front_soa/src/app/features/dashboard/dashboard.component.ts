@@ -9,26 +9,27 @@ import { HeaderComponent } from "../../shared/components/header/header.component
 import { SharingDataService } from '../../shared/services/sharing-data.service';
 import { PopupComponent } from "../../shared/utils/popup/popup.component";
 import { ShareWithUsersComponent } from "../users/share-with-users/share-with-users.component";
-import { TaskComponent } from "../task/task.component";
 import { EditTaskComponent } from "../task/edit-task/edit-task.component";
 import { TableKanbanService } from '../../core/services/table-kanban.service';
 import { AuthService } from '../../core/services/auth.service';
 import { TableComponent } from '../../shared/utils/table/table.component';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
+import { BoardComponent } from "../board/board.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule, 
-    DragDropModule, 
-    HeaderComponent, 
-    PopupComponent, 
-    ShareWithUsersComponent, 
+    CommonModule,
+    DragDropModule,
+    HeaderComponent,
+    PopupComponent,
+    ShareWithUsersComponent,
     EditTaskComponent,
     TableComponent,
-    AddTaskComponent
-  ],
+    AddTaskComponent,
+    BoardComponent
+],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
@@ -59,7 +60,7 @@ export class DashboardComponent implements OnInit{
     
   }
 
-  boards: Board[] = []; // Define tu lista de tableros
+   // Define tu lista de tableros
                       
   selectedBoard: Board | null = null;
 
