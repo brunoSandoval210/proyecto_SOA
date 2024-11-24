@@ -94,7 +94,7 @@
 
   <app-popup>
     @if(createTask){
-      <app-add-task></app-add-task>
+      <app-add-task [columnId]="columnId"></app-add-task>
     }@if(isEditMode){
       <app-edit-task></app-edit-task>
     }@if(addUser){

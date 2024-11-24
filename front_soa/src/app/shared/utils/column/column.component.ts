@@ -13,12 +13,16 @@ import { SharingDataService } from '../../services/sharing-data.service';
 export class ColumnComponent {
   @Input() title: string = '';
   @Input() tasks: any[] = [];
-
+  @Input() columnId: any;
   constructor(private sharingDataService: SharingDataService){
 
   }
 
   addTask() {
-    this.sharingDataService.createTask.emit(true);
+    this.sharingDataService.createTask.emit({
+      create:true,
+      columnId:this.columnId
+    });
+    console.log(this.columnId);
   }
 }

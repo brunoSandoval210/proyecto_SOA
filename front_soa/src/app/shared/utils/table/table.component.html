@@ -2,6 +2,7 @@
     <app-column
         *ngFor="let column of table?.columns"
         [title]="column.name"
-        [tasks]="column.tasks">
+        [tasks]="column.tasks"
+        [columnId]="column.id">
       </app-column>
 </div>

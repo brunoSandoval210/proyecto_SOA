@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit{
   table: { id: number; name: string; columns: any[] } | null = null;
   createTask: boolean = false;
   addUser:boolean = false;
+  columnId:any;
 
   constructor(private sharingDataService: SharingDataService,
               private tableKanbanService:TableKanbanService,    
@@ -49,16 +50,33 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // Suscribirse a cambios en la edición de tareas
     this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-      this.openModal(isOpen,false,false);
+      this.openModal(isOpen, false, false);
     });
+  
+    // Obtén el ID del usuario
     this.userId = this.authService.getUserId();
+  
+    // Carga la tabla inicial
     this.getTable();
-    this.sharingDataService.createTask.subscribe((isCreateTask: boolean) => {
-      this.openModal(false,isCreateTask,false);
+  
+    // Suscripción al evento para crear tareas
+    this.sharingDataService.createTask.subscribe((data: { isCreateTask: boolean; columnId: any }) => {
+      this.openModal(false, true, false);
+  
+      // Asigna el columnId recibido desde el evento
+      this.columnId = data.columnId;
+      console.log('Column ID recibido:', this.columnId);
     });
-    
+  
+    // Evento para actualizar la tabla
+    this.sharingDataService.eventCreateTask.subscribe(() => {
+      this.getTable();
+      this.closeModal();
+    });
   }
+  
 
    // Define tu lista de tableros
                       
@@ -73,14 +91,7 @@ export class DashboardComponent implements OnInit{
   }
 
   addList() {
-    /*if (this.selectedBoard) {
-      const newList: List = {
-        id: 1,
-        name: `Nueva Lista ${this.selectedBoard.lists.length + 1}`,
-        tasks: [],
-      };
-      this.selectedBoard.lists.push(newList);
-    }*/
+
   }
 
   drop(event: CdkDragDrop<Task[]>) {
@@ -123,5 +134,6 @@ export class DashboardComponent implements OnInit{
       }
     });  
   }
+  
 
 }
