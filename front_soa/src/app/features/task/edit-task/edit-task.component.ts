@@ -31,7 +31,7 @@ export class EditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-    this.getTask();
+    //this.getTask();
   }
 
   getTask():void {
