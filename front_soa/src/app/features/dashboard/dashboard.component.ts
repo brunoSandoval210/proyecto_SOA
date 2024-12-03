@@ -29,57 +29,70 @@ import { BoardComponent } from "../board/board.component";
     TableComponent,
     AddTaskComponent,
     BoardComponent
-],
+  ],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
 
-  isEditMode: boolean = false;
-  selectedTask: any [] = [];
-  userId:number = 0;
+  selectedTask: any[] = [];
+
+  userId: number = 0;
   table: { id: number; name: string; columns: any[] } | null = null;
+  columnId: any;
+  taskId: any;
+
+  editTask: boolean = false;
   createTask: boolean = false;
-  addUser:boolean = false;
-  columnId:any;
+  addUser: boolean = false;
 
   constructor(private sharingDataService: SharingDataService,
-              private tableKanbanService:TableKanbanService,    
-              private authService:AuthService
-  ){
+    private tableKanbanService: TableKanbanService,
+    private authService: AuthService
+  ) {
   }
 
   ngOnInit(): void {
-    // Suscribirse a cambios en la edición de tareas
-    this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-      this.openModal(isOpen, false, false);
-    });
-  
+
+    //  // Suscribirse a cambios en la edición de tareas
+    //  this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
+    //    this.openModal(isOpen, false);
+    // });
+
     // Obtén el ID del usuario
     this.userId = this.authService.getUserId();
-  
+
     // Carga la tabla inicial
     this.getTable();
-  
+
     // Suscripción al evento para crear tareas
     this.sharingDataService.createTask.subscribe((data: { isCreateTask: boolean; columnId: any }) => {
       this.openModal(false, true, false);
-  
+
       // Asigna el columnId recibido desde el evento
       this.columnId = data.columnId;
       console.log('Column ID recibido:', this.columnId);
     });
-  
+
+    // Suscripción al evento para editar tareas
+    this.sharingDataService.editTask.subscribe((data: { isEditTask: boolean; taskId: any }) => {
+      this.openModal(true, false, false);
+
+      // Asigna el columnId recibido desde el evento
+      this.taskId = data.taskId;
+      console.log('Task ID recibido:', this.taskId);
+    });
+
     // Evento para actualizar la tabla
     this.sharingDataService.eventCreateTask.subscribe(() => {
       this.getTable();
       this.closeModal();
     });
   }
-  
 
-   // Define tu lista de tableros
-                      
+
+  // Define tu lista de tableros
+
   selectedBoard: Board | null = null;
 
   selectBoard(board: Board) {
@@ -90,35 +103,20 @@ export class DashboardComponent implements OnInit{
     // Lógica para crear un tablero
   }
 
-  addList() {
-
-  }
-
-  drop(event: CdkDragDrop<Task[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-
-  openModal(editMode: boolean = false, createTask: boolean = false, addUse:boolean = false): void {
-    this.sharingDataService.onOpenCloseModal.emit(true);
-    this.isEditMode = editMode;
+  openModal(editTask: boolean = false, createTask: boolean = false, addUser: boolean = false): void {
+    // Asegura que solo una acción está activa
+    this.editTask = editTask;
     this.createTask = createTask;
-    this.addUser = addUse;
+    this.addUser = addUser;
+
+    // Emitir evento para abrir el modal
+    this.sharingDataService.onOpenCloseModal.emit(true);
   }
 
   addUsers(): void {
     this.openModal(false, false, true);
   }
 
-  
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
   }
@@ -132,8 +130,8 @@ export class DashboardComponent implements OnInit{
       error: (err) => {
         console.error('Error al obtener el tablero:', err);
       }
-    });  
+    });
   }
-  
+
 
 }

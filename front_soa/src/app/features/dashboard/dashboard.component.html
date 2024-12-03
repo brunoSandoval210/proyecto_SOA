@@ -37,69 +37,22 @@
           <!-- Nombre del Tablero -->
           <button class="font-sans py-1 px-4 bg-[#0fb884] rounded-lg text-white" (click)="addUsers()">Share</button>
         </div>
-
-
-
       </header>
 
-      <!-- Contenedor de Listas -->
-      <!-- <div class="grid grid-cols-4 gap-4 p-5 bg-gray-100"> -->
-        <!-- Lista: Tareas por Asignar -->
-        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
-          <div class="flex justify-between items-center mb-2">
-            <h2 class="text-md font-semibold text-gray-800">Tareas por asignar</h2>
-            <button class="text-gray-400 p-1">
-              +
-            </button>
-          </div>
-          <app-task></app-task>
-        </div> -->
-
-        <!-- Lista: Pendiente -->
-        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
-          <div class="flex justify-between items-center mb-2">
-            <h2 class="text-md font-semibold text-gray-800">Pendiente</h2>
-            <button class="text-gray-400 p-1">
-              +
-            </button>
-          </div>
-          <app-task></app-task>
-        </div> -->
-
-        <!-- Lista: En Proceso -->
-        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
-          <div class="flex justify-between items-center mb-2">
-            <h2 class="text-md font-semibold text-gray-800">En Proceso</h2>
-            <button class="text-gray-400 p-1">
-              +
-            </button>
-          </div>
-          <app-task></app-task>
-        </div> -->
-
-        <!-- Lista: Finalizadas -->
-        <!-- <div class="bg-white rounded-lg shadow p-4 flex flex-col">
-          <div class="flex justify-between items-center mb-2">
-            <h2 class="text-md font-semibold text-gray-800">Finalizadas</h2>
-            <button class="text-gray-400 p-1">
-              +
-            </button>
-          </div>
-          <app-task></app-task>
-        </div>
-      </div> -->
       <app-table [table]="table"></app-table>
     </main>
   </div>
 
   <app-popup>
-    @if(createTask){
+    <ng-container *ngIf="createTask">
       <app-add-task [columnId]="columnId"></app-add-task>
-    }@if(isEditMode){
-      <app-edit-task></app-edit-task>
-    }@if(addUser){
+    </ng-container>
+    <ng-container *ngIf="editTask">
+      <app-edit-task [taskId]="taskId"></app-edit-task>
+    </ng-container>
+    <ng-container *ngIf="addUser">
       <app-share-with-users></app-share-with-users>
-    }
+    </ng-container>
   </app-popup>
 
 </div>
