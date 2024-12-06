@@ -5,11 +5,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { SharingDataService } from '../../../shared/services/sharing-data.service';
 import Swal from 'sweetalert2';
 import { Task } from '../../../core/models/task.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-task',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './edit-task.component.html',
   styleUrl: './edit-task.component.scss'
 })
@@ -18,7 +19,8 @@ export class EditTaskComponent implements OnInit {
   //setear los datos en el componente
   @Input() taskId: any;
 
-  task: Task | undefined;
+  task: Task;
+  title: string | undefined;
 
   userId: number = 0; // ID del usuario que crea la tarea
 
@@ -31,7 +33,6 @@ export class EditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = this.authService.getUserId();
-    //this.getTask();
   }
 
   getTask():void {
