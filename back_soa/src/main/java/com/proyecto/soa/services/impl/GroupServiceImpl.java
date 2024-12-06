@@ -43,25 +43,11 @@ public class GroupServiceImpl implements GroupService {
     public GroupResponse createGroup(GroupRequest groupRequest) {
 
         Group group = groupValid.validGroup(groupRequest);
-        group.setStatus(1);
-
-        //buscar el usuario por id
-        Optional<User> users = userRepository.findById(groupRequest.getUserId());
-
-        // Verificar si el usuario está presente y pasarlo a una lista
-        if (users.isPresent()) {
-            User user = users.get();
-            group.setUsers(List.of(user));
-        } else {
-            // Manejar el caso en que el usuario no se encuentra
-            throw new RuntimeException("User not found with id: " + groupRequest.getUserId());
-        }
-
         group = groupRepository.save(group);
 
         //Crear tabla Kanban para el grupo
         TableRequest tableRequest = new TableRequest();
-        tableRequest.setUserId(groupRequest.getUserId()); //Asignar el primer usuario del grupo
+        //tableRequest.setUserId(groupRequest.getUserId()); //Asignar el primer usuario del grupo
         tableRequest.setName("Tablero de " + group.getName());
         tableRequest.setGroupId(group.getId());
         TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableRequest);
