@@ -71,7 +71,6 @@ export class DashboardComponent implements OnInit {
 
       // Asigna el columnId recibido desde el evento
       this.columnId = data.columnId;
-      console.log('Column ID recibido:', this.columnId);
     });
 
     // Suscripción al evento para editar tareas
@@ -80,7 +79,6 @@ export class DashboardComponent implements OnInit {
 
       // Asigna el columnId recibido desde el evento
       this.taskId = data.taskId;
-      console.log('Task ID recibido:', this.taskId);
     });
 
     // Evento para actualizar la tabla

@@ -25,13 +25,11 @@ export class TaskComponent {
       edit: true,
       taskId: this.task.id
     });
-    console.log(this.task.id);
 
     // Suscribirse al Observable para obtener la tarea
     this.taskService.getTaskbyID(this.task.id).subscribe({
       next: (task) => {
         this.task = task; // Asigna la tarea obtenida al componente
-        console.log(task);
       },
       error: (err) => {
         console.error('Error al obtener la tarea:', err);

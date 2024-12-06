@@ -27,7 +27,7 @@ public class TaskController {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> saveTask(@PathVariable Long id,@RequestBody TaskRequest taskRequest){
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestBody TaskRequest taskRequest){
         try {
             return ResponseEntity.ok(taskService.updateTask(taskRequest,id));
         } catch (Exception e) {

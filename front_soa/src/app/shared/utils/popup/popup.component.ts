@@ -23,5 +23,6 @@ export class PopupComponent implements OnInit{
 
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
+    this.sharingDataService.cleanPopup.emit(true);
   }
 }

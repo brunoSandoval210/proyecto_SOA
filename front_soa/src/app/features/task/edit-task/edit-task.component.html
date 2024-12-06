@@ -7,11 +7,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M3 10h11M9 21h11M5 6h14m4-1a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5z" />
             </svg>
-            <input [(ngModel)]="task?.title" type="text" placeholder="Titulo" class="border-none font-sans">
+            <input [(ngModel)]="task.title" type="text" placeholder="Titulo" class="border-none font-sans">
         </h2>
         <p class="text-sm mt-1">
             en la lista
-            <span class="text-gray-700 px-2 py-1 rounded-md">GIOMAR</span>
+            <span class="text-gray-700 px-2 py-1 rounded-md">{{ task.nameUser || 'Sin asignar' }}</span>
         </p>
     </div>
 
@@ -54,7 +54,7 @@
             </svg>
             <span>Descripción</span>
         </p>
-        <textarea
+        <textarea [(ngModel)]="task.descripcion"
             class="w-full text-black mt-2 p-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             placeholder="Añadir una descripción más detallada..."></textarea>
     </div>
