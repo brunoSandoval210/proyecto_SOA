@@ -14,7 +14,6 @@ import { TableKanbanService } from '../../core/services/table-kanban.service';
 import { AuthService } from '../../core/services/auth.service';
 import { TableComponent } from '../../shared/utils/table/table.component';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
-import { BoardComponent } from "../board/board.component";
 import { Router, RouterLink } from '@angular/router';
 import { GroupService } from '../../core/services/group.service';
 
@@ -30,7 +29,6 @@ import { GroupService } from '../../core/services/group.service';
     EditTaskComponent,
     TableComponent,
     AddTaskComponent,
-    BoardComponent,
     RouterLink
   ],
   templateUrl: './dashboard.component.html',

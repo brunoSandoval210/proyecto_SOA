@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { SharingDataService } from '../../shared/services/sharing-data.service';
 import { AuthService } from '../../core/services/auth.service';
-import { BoardComponent } from '../board/board.component';
 import { TaskService } from '../../core/services/task.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -16,7 +15,6 @@ import { GroupService } from '../../core/services/group.service';
   standalone: true,
   imports: [
     HeaderComponent,
-    BoardComponent,
     CommonModule,
     PopupComponent,
     TasksCalendarComponent,

@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,30 @@ export class UserService {
 
   private url: string = `${environment.apiUrl}`;
 
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
-  constructor(private http: HttpClient) { }
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+  }
+  getToken() {
+    return this.authService.token;
+  }
+
+  searchUserByEmail(email: string): Observable<any> {
+    const url = `${this.url}/user/emailLike`;
+    return this.http.get(url, {
+      headers: this.getAuthHeaders(),
+      params: { email },
+    });
+  }
+
 
   // Obtener todos los Users
   getUsers(): Observable<User[]> {

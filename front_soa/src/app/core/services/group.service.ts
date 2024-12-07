@@ -30,6 +30,13 @@ export class GroupService {
     return this.http.get(`${this.baseUrl}/list/${idUser}`,{headers: this.getAuthHeaders()});
   }
 
+  createGroup(groupData: { name: string; usersId: number[] }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create`, groupData, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+  
+
   getGroupById(groupId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/${groupId}`, {
       headers: this.getAuthHeaders(),
