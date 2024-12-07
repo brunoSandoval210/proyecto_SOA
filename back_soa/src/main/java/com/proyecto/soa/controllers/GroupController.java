@@ -22,6 +22,16 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getGroupById(@PathVariable Long id){
+        try {
+            List<GroupResponse> group = groupService.getGroupsById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(group);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/list/{id}")
     public ResponseEntity<?> listByUser(@PathVariable Long id){
         try {

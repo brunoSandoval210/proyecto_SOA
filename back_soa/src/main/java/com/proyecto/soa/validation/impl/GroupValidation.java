@@ -1,6 +1,7 @@
 package com.proyecto.soa.validation.impl;
 
 import com.proyecto.soa.model.dtos.GroupRequest;
+import com.proyecto.soa.model.dtos.GroupResponse;
 import com.proyecto.soa.model.entities.Group;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.model.entities.UserGroup;
@@ -21,9 +22,22 @@ import java.util.Optional;
 public class GroupValidation implements GroupValid {
 
     private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final ModelMapper modelMapper;
 
     @Override
-    public Group validGroup(GroupRequest groupRequest) {
+    public Group validGetGroupById(Long groupId) {
+        Optional<Group> groups = groupRepository.findById(groupId);
+
+        if (groups.isPresent()) {
+            Group group = groups.get();
+            return group;
+        }
+        throw new RuntimeException("Group not found with id: " + groupId);
+    }
+
+    @Override
+    public Group validCreateGroup(GroupRequest groupRequest) {
 
         Group group = new Group();
         if (groupRequest.getName() == null || groupRequest.getName().isEmpty()) {
