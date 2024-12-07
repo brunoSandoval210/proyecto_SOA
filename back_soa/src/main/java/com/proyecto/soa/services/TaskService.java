@@ -6,4 +6,5 @@ import com.proyecto.soa.model.dtos.TaskResponse;
 public interface TaskService {
     TaskResponse createTask(TaskRequest taskRequest);
     TaskResponse updateTask(TaskRequest taskRequest, Long id);
+    TaskResponse findById(Long id);
 }

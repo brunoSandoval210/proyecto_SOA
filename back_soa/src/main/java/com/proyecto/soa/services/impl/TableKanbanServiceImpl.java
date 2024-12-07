@@ -37,7 +37,6 @@ public class TableKanbanServiceImpl implements TableKanbanService {
     @Transactional
     @Override
     public TableKanbanResponse save(TableRequest tableRequest) {
-        System.out.println(tableRequest.getName() + tableRequest.getUserId() + tableRequest.getGroupId());
         TableKanban tableKanban = tableKanbanValid.validCreateTableKanban(
                 tableRequest.getUserId(), tableRequest.getGroupId(), tableRequest.getName());
         tableKanbanRepository.save(tableKanban);

@@ -6,19 +6,24 @@ import { SharingDataService } from '../../services/sharing-data.service';
 @Component({
   selector: 'app-column',
   standalone: true,
-  imports: [CommonModule,TaskComponent],
+  imports: [CommonModule, TaskComponent],
   templateUrl: './column.component.html',
   styleUrl: './column.component.scss'
 })
 export class ColumnComponent {
   @Input() title: string = '';
   @Input() tasks: any[] = [];
+  @Input() columnId: any;
 
-  constructor(private sharingDataService: SharingDataService){
+  constructor(private sharingDataService: SharingDataService) {
 
   }
 
   addTask() {
-    this.sharingDataService.createTask.emit(true);
+    this.sharingDataService.createTask.emit({
+      create: true,
+      columnId: this.columnId
+    });
+    console.log(this.columnId);
   }
 }

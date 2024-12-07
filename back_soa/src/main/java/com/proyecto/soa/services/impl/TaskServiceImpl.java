@@ -2,7 +2,9 @@ package com.proyecto.soa.services.impl;
 
 import com.proyecto.soa.model.dtos.TaskRequest;
 import com.proyecto.soa.model.dtos.TaskResponse;
+import com.proyecto.soa.model.dtos.UserResponse;
 import com.proyecto.soa.model.entities.Task;
+import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.TaskRepository;
 import com.proyecto.soa.services.TaskService;
 import com.proyecto.soa.services.UserService;
@@ -11,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +49,11 @@ public class TaskServiceImpl implements TaskService {
         return taskResponse;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public TaskResponse findById(Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+        return task.map(value -> modelMapper.map(value, TaskResponse.class)).orElse(null);
+    }
 
 }

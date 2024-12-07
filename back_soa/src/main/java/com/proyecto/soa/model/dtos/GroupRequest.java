@@ -9,8 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class GroupRequest {
-    @NotNull
     private String name;
-    @NotNull
-    private Long userId;
+    private List<Long> userId;
 }

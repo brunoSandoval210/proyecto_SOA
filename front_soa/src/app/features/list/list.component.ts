@@ -16,12 +16,7 @@ export class ListComponent {
   @Input() list!: List;
 
   addTask() {
-    const newTask: Task = {
-      id: 1,
-      title: `Nueva Tarea ${this.list.tasks.length + 1}`,
-      assignedTo: undefined
-    };
-    this.list.tasks.push(newTask);
+
   }
 
   drop(event: CdkDragDrop<Task[]>) {
