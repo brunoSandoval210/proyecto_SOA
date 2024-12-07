@@ -6,6 +6,7 @@ import { RegisterComponent } from './authentication/register/register.component'
 import { ForgotPasswordComponent } from './authentication/forgot-password/forgot-password.component';
 import { AuthGuard } from './core/services/auth.guard';
 import { AuthRedirectGuard } from './core/services/auth-redirect.guard';
+import { CalendarComponent } from './features/calendar/calendar.component';
 
 export const routes: Routes = [
     //****************************Login *****************************/
@@ -16,5 +17,6 @@ export const routes: Routes = [
 
     //****************************Dashboard *****************************/
     {path:'dashboard', component:DashboardComponent, canActivate: [AuthGuard]},
+    {path:'calendar', component:CalendarComponent, canActivate: [AuthGuard]},
 
 ];

@@ -34,6 +34,13 @@ export class TaskService {
     });
   }
 
+  
+  getTaskbyIdUser(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.apiUrl}/user/${id}`;
+    return this.http.get<any>(url,{headers});
+  }
+
   // Método para crear una tarea
   createTask(
     taskPayload: { 
