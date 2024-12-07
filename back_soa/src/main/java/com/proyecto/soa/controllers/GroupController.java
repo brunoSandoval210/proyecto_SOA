@@ -1,5 +1,6 @@
 package com.proyecto.soa.controllers;
 
+import com.proyecto.soa.model.dtos.AddUserGroup;
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
 import com.proyecto.soa.model.dtos.GroupsByUser;
@@ -22,6 +23,16 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getGroupById(@PathVariable Long id){
+        try {
+            GroupResponse group = groupService.getGroupById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(group);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/list/{id}")
     public ResponseEntity<?> listByUser(@PathVariable Long id){
         try {
@@ -41,6 +52,19 @@ public class GroupController {
             GroupResponse groupResponse = groupService.createGroup(groupRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(groupResponse);
 
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error",e.getMessage()));
+        }
+    }
+
+    @PutMapping("/addUser")
+    public ResponseEntity<?> addUserToGroup(@Valid @RequestBody AddUserGroup addUserGroup, BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+            }
+            groupService.AddUserToGroup(addUserGroup);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario agregado al grupo");
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error",e.getMessage()));
         }

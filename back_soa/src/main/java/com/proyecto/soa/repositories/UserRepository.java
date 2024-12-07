@@ -17,10 +17,17 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     //Trae todos los usuarios paginados
     Page<User> findAll(Pageable pageable);
-    //Busca un usuario por su nombre de usuario
+
+    //Busca un usuario por su email
     Optional<User> findByEmail(String email);
+
+    //Busca un usuario por su email de manera automática
+    @Query("SELECT u FROM User u WHERE u.email like :email%")
+    List<User> findByEmailLike(@Param("email") String email);
+
     //Busca un usuario por su nombre de usuario
     Optional<User> findByUsername(String username);
+
     //Actualizar una contrasena
     @Modifying
     @Query("UPDATE User u SET u.password = :password WHERE u.id = :userId")

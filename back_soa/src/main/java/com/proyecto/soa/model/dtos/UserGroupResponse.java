@@ -5,13 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponse {
-
+public class UserGroupResponse {
     private Long id;
     private String name;
     private String lastname;
-    private String email;
-    private RoleResponse role;
-    private TableKanbanResponse tableKanban;
-
 }
