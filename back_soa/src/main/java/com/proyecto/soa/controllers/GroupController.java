@@ -2,6 +2,7 @@ package com.proyecto.soa.controllers;
 
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
+import com.proyecto.soa.model.dtos.GroupsByUser;
 import com.proyecto.soa.services.GroupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class GroupController {
     @GetMapping("/list/{id}")
     public ResponseEntity<?> listByUser(@PathVariable Long id){
         try {
-            List<GroupResponse> groups = groupService.getGroupsByUser(id);
+            List<GroupsByUser> groups = groupService.getGroupsByUser(id);
             return ResponseEntity.status(HttpStatus.OK).body(groups);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

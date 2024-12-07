@@ -1,9 +1,6 @@
 package com.proyecto.soa.services.impl;
 
-import com.proyecto.soa.model.dtos.GroupRequest;
-import com.proyecto.soa.model.dtos.GroupResponse;
-import com.proyecto.soa.model.dtos.TableKanbanResponse;
-import com.proyecto.soa.model.dtos.TableRequest;
+import com.proyecto.soa.model.dtos.*;
 import com.proyecto.soa.model.entities.Group;
 import com.proyecto.soa.model.entities.TableKanban;
 import com.proyecto.soa.model.entities.User;
@@ -20,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,15 +29,21 @@ public class GroupServiceImpl implements GroupService {
     private final GroupRepository groupRepository;
     private final ModelMapper modelMapper;
     private final TableKanbanService tableKanbanService;
-    private final UserRepository userRepository;
     private final UserGroupRepository userGroupRepository;
 
     @Transactional
     @Override
-    public List<GroupResponse> getGroupsByUser(Long userId) {
+    public List<GroupsByUser> getGroupsByUser(Long userId) {
 
         List<Group> groups = groupRepository.findByUserGroups_User_Id(userId);
-        return groups.stream().map(value -> modelMapper.map(value, GroupResponse.class)).toList();
+        List<GroupsByUser> groupsByUsers = new ArrayList<>();
+        groups.forEach(group -> {
+            GroupsByUser groupsByUser = modelMapper.map(group, GroupsByUser.class);
+            groupsByUser.setGroupId(group.getId());
+            groupsByUser.setGroupName(group.getName());
+            groupsByUsers.add(groupsByUser);
+        });
+        return groupsByUsers;
     }
 
     @Transactional

@@ -20,9 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GroupValidation implements GroupValid {
 
-    private final GroupRepository groupRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     @Override
     public Group validGroup(GroupRequest groupRequest) {
@@ -40,7 +38,7 @@ public class GroupValidation implements GroupValid {
             }
             userGroup.setUser(user.get());
             userGroup.setGroup(group);
-            userGroup.setId(new UserGroupId(userId, group.getId())); // Set the composite ID
+            userGroup.setId(new UserGroupId(userId, group.getId()));
             userGroups.add(userGroup);
         }
         group.setUserGroups(userGroups);
