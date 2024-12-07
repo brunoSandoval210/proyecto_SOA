@@ -26,9 +26,14 @@ export class GroupService {
     return this.authService.token;
   }
 
-
   getGroupList(idUser: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/list/${idUser}`,{headers: this.getAuthHeaders()});
+  }
+
+  getGroupById(groupId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${groupId}`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
 }

@@ -15,7 +15,8 @@ import { AuthService } from '../../core/services/auth.service';
 import { TableComponent } from '../../shared/utils/table/table.component';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
 import { BoardComponent } from "../board/board.component";
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { GroupService } from '../../core/services/group.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +30,8 @@ import { Router } from '@angular/router';
     EditTaskComponent,
     TableComponent,
     AddTaskComponent,
-    BoardComponent
+    BoardComponent,
+    RouterLink
   ],
   templateUrl: './dashboard.component.html',
   styles: ``
@@ -40,6 +42,8 @@ export class DashboardComponent implements OnInit {
   table: { id: number; name: string; columns: any[] } | null = null;
   columnId: any;
   taskId: any;
+  groupsLinks: any[] = [];
+
 
   editTask: boolean = false;
   createTask: boolean = false;
@@ -48,54 +52,40 @@ export class DashboardComponent implements OnInit {
   constructor(private sharingDataService: SharingDataService,
     private tableKanbanService: TableKanbanService,
     private authService: AuthService,
-    private router:Router
+    private router:Router,
+    private groupService: GroupService,
+
   ) {
   }
 
   ngOnInit(): void {
-
-    //  // Suscribirse a cambios en la edición de tareas
-    //  this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-    //    this.openModal(isOpen, false);
-    // });
-
-    // Obtén el ID del usuario
     this.userId = this.authService.getUserId();
 
-    // Carga la tabla inicial
     this.getTable();
 
-    // Suscripción al evento para crear tareas
     this.sharingDataService.createTask.subscribe((data: { isCreateTask: boolean; columnId: any }) => {
       this.openModal(false, true, false);
 
-      // Asigna el columnId recibido desde el evento
       this.columnId = data.columnId;
     });
 
-    // Suscripción al evento para editar tareas
     this.sharingDataService.editTask.subscribe((data: { isEditTask: boolean; taskId: any }) => {
       this.openModal(true, false, false);
 
-      // Asigna el columnId recibido desde el evento
       this.taskId = data.taskId;
     });
 
-    // Evento para actualizar la tabla
     this.sharingDataService.eventCreateTask.subscribe(() => {
       this.getTable();
       this.closeModal();
     });
 
-    // Evento para actualizar la tabla
     this.sharingDataService.eventEditTask.subscribe(() => {
       this.getTable();
       this.closeModal();
     });
+    this.getGroupsLink();
   }
-
-
-  // Define tu lista de tableros
 
   selectedBoard: Board | null = null;
 
@@ -104,16 +94,13 @@ export class DashboardComponent implements OnInit {
   }
 
   createBoard() {
-    // Lógica para crear un tablero
   }
 
   openModal(editTask: boolean = false, createTask: boolean = false, addUser: boolean = false): void {
-    // Asegura que solo una acción está activa
     this.editTask = editTask;
     this.createTask = createTask;
     this.addUser = addUser;
 
-    // Emitir evento para abrir el modal
     this.sharingDataService.onOpenCloseModal.emit(true);
   }
 
@@ -134,6 +121,11 @@ export class DashboardComponent implements OnInit {
       error: (err) => {
         console.error('Error al obtener el tablero:', err);
       }
+    });
+  }
+  getGroupsLink(): void {
+    this.groupService.getGroupList(this.authService.getUserId()).subscribe((groups: any[]) => {
+      this.groupsLinks = groups;
     });
   }
 
