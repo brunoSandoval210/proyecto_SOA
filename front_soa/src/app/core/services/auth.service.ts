@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class AuthService {
     isAuth: false,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
   private isBrowser(): boolean {
     return typeof window !== 'undefined';
@@ -51,6 +52,7 @@ export class AuthService {
     this._user.isAuth = true;
     if (this.isBrowser()) {
       sessionStorage.setItem('login', JSON.stringify(user));
+      //localStorage.setItem('login', JSON.stringify(user));
     }
     this.userSubject.next(this._user); // Notifica a los suscriptores
   }
@@ -69,6 +71,7 @@ export class AuthService {
     this._token = token;
     if (this.isBrowser()) {
       sessionStorage.setItem('token', token);
+      //localStorage.setItem('token',token);
     }
     // Extraer información del usuario del token
     const payload = this.getPayload(token);
@@ -133,5 +136,6 @@ export class AuthService {
       sessionStorage.removeItem('login');
       sessionStorage.removeItem('token');
     }
+    this.router.navigate(['/login']);
   }
 }

@@ -33,16 +33,21 @@ export class Login2Component {
 
   onSubmit() {
     const { username, password } = this.loginForm2.value;
+  
     this.authService.loginUser({ username, password }).subscribe(
       response => {
         if (response && response.token) {
-          this.authService.token = response.token;
+          // Guardar el token en el localStorage
+          //localStorage.setItem('token', response.token);
+          sessionStorage.setItem('token', response.token);
           Swal.fire({
             icon: 'success',
             title: 'Inicio de sesión exitoso',
             text: 'Bienvenido de nuevo'
           });
-          this.router.navigate(['/dashboard']); // Redirige al dashboard u otra ruta
+  
+          // Redirige al dashboard u otra ruta
+          this.router.navigate(['/dashboard']);
         } else {
           console.error('Invalid login response', response);
           Swal.fire({

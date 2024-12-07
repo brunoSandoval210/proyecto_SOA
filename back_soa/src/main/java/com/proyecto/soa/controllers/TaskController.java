@@ -44,4 +44,13 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
         }
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> showByUser(@PathVariable Long id){
+        try {
+            return ResponseEntity.ok(taskService.findTaskByUser(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al buscar las tareas del usuario" + e);
+        }
+    }
 }
