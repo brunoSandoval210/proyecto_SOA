@@ -18,6 +18,7 @@ import { TableKanbanService } from '../../../core/services/table-kanban.service'
 export class EditTaskComponent implements OnInit, OnChanges {
 
   @Input() taskId: any;
+  @Input() tableId: any;
   userId: number = 0;
   column: any;
 
@@ -68,16 +69,16 @@ export class EditTaskComponent implements OnInit, OnChanges {
     );
   }
 
-  getTable() {
-    this.tableKanbanService.getTablesByUser(this.userId).subscribe({
+  getColumns(){
+    this.tableKanbanService.getColumnsByTable(this.table).subscribe({
       next: (data: any) => {
         this.table = data;
         console.log('Tablero Kanban:', this.table);
       },
       error: (err) => {
-        console.error('Error al obtener el tablero:', err);
+        console.error('Error al obtener las columnas del tablero:', err);
       }
-    });
+    })
   }
 
   resetTask(): void {

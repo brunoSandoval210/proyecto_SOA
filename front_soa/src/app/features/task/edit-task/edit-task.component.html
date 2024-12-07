@@ -26,10 +26,7 @@
             <label class="block text-sm font-medium text-gray-700" for="priority">Estado</label>
             <select [(ngModel)]="column" id="column" name="column"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
-                <option value="1">Por asignar</option>
-                <option value="2">Pendiente</option>
-                <option value="3">En proceso</option>
-                <option value="4">Finalizado</option>
+                <option *ngFor="let item of table" [value]="item.id">{{ item.name }}</option>
             </select>
         </div>
         <div class="mb-4">
