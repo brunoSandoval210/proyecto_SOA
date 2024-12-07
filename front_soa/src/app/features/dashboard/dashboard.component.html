@@ -58,7 +58,7 @@
       <app-add-task [columnId]="columnId"></app-add-task>
     </ng-container>
     <ng-container *ngIf="editTask">
-      <app-edit-task [taskId]="taskId"></app-edit-task>
+      <app-edit-task [taskId]="taskId" [tableId]="table?.id"></app-edit-task>
     </ng-container>
     <ng-container *ngIf="addUser">
       <app-share-with-users></app-share-with-users>

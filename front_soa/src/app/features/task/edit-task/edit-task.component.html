@@ -24,12 +24,9 @@
         </div>
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700" for="priority">Estado</label>
-            <select [(ngModel)]="column" id="column" name="column"
+            <select [(ngModel)]="task.columnId" id="column" name="column"
                 class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
-                <option value="1">Por asignar</option>
-                <option value="2">Pendiente</option>
-                <option value="3">En proceso</option>
-                <option value="4">Finalizado</option>
+                <option *ngFor="let col of columns" [value]="col.id">{{ col.name }}</option>
             </select>
         </div>
         <div class="mb-4">
@@ -39,7 +36,6 @@
                 required />
         </div>
         <!-- Botón Guardar -->
-        <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700">Guardar
-            tarea</button>
+        <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700">Guardar tarea</button>
     </form>
 </div>

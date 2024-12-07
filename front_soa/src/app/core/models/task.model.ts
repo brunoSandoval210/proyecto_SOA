@@ -7,5 +7,6 @@ export interface Task {
   limitDate?: string;
   userId?: number;
   nameUser?: string;
+  columnId?: number;
 
 }

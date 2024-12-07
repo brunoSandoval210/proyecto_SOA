@@ -36,4 +36,11 @@ export class TableKanbanService {
     return this.http.get<any[]>(`${this.url}/user/${userId}`, { headers });
   }
 
+  // Obtener tablas por usuario
+  getColumnsByTable(tableId: number): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<any[]>(`${this.url}/columns/${tableId}`, { headers });
+  }
+
+
 }

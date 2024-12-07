@@ -13,4 +13,5 @@ public class TaskResponse {
     private LocalDate limitDate;
     private Long userId;
     private String nameUser;
+    private Long columnId;
 }

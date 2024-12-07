@@ -11,4 +11,6 @@ import { ColumnComponent } from '../column/column.component';
 })
 export class TableComponent {
   @Input() table: { id: number; name: string; columns: any[] } | null = null;
+
+  
 }
