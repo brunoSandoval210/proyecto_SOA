@@ -7,8 +7,10 @@ import com.proyecto.soa.model.dtos.TableRequest;
 import com.proyecto.soa.model.entities.Group;
 import com.proyecto.soa.model.entities.TableKanban;
 import com.proyecto.soa.model.entities.User;
+import com.proyecto.soa.model.entities.UserGroup;
 import com.proyecto.soa.repositories.GroupRepository;
 import com.proyecto.soa.repositories.TableKanbanRepository;
+import com.proyecto.soa.repositories.UserGroupRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.GroupService;
 import com.proyecto.soa.services.TableKanbanService;
@@ -30,14 +32,14 @@ public class GroupServiceImpl implements GroupService {
     private final ModelMapper modelMapper;
     private final TableKanbanService tableKanbanService;
     private final UserRepository userRepository;
+    private final UserGroupRepository userGroupRepository;
 
     @Transactional
     @Override
-    public GroupResponse getGroupsByUser(Long userId) {
+    public List<GroupResponse> getGroupsByUser(Long userId) {
 
-        Optional<Group> groups = groupRepository.findByUserId(userId);
-
-        return groups.map(value -> modelMapper.map(value, GroupResponse.class)).orElse(null);
+        List<Group> groups = groupRepository.findByUserGroups_User_Id(userId);
+        return groups.stream().map(value -> modelMapper.map(value, GroupResponse.class)).toList();
     }
 
     @Transactional
@@ -48,15 +50,18 @@ public class GroupServiceImpl implements GroupService {
         group.setStatus(1);
         group = groupRepository.save(group);
 
-        //Crear tabla Kanban para el grupo
         TableRequest tableKanban = new TableRequest();
-        //tableRequest.setUserId(groupRequest.getUserId()); //Asignar el primer usuario del grupo
         tableKanban.setName("Tablero de " + group.getName());
         tableKanban.setGroupId(group.getId());
         TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableKanban);
 
         GroupResponse groupResponse = modelMapper.map(group, GroupResponse.class);
         groupResponse.setTableKanbanResponse(tableKanbanResponse);
+
+        for (UserGroup userGroup : group.getUserGroups()) {
+            userGroup.setGroup(group);
+            userGroupRepository.save(userGroup);
+        }
         return groupResponse;
     }
 

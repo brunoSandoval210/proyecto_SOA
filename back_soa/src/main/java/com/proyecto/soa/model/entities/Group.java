@@ -20,6 +20,6 @@ public class Group extends Maintenance{
     @OneToOne(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private TableKanban tableKanban;
 
-    @ManyToMany(mappedBy = "groups")
-    private List<User> users = new ArrayList<>();
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserGroup> userGroups;
 }

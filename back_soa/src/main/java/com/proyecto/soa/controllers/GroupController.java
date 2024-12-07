@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -23,8 +24,8 @@ public class GroupController {
     @GetMapping("/list/{id}")
     public ResponseEntity<?> listByUser(@PathVariable Long id){
         try {
-            GroupResponse group = groupService.getGroupsByUser(id);
-            return ResponseEntity.status(HttpStatus.OK).body(group);
+            List<GroupResponse> groups = groupService.getGroupsByUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body(groups);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -46,11 +47,7 @@ public class GroupController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteGroup(@PathVariable Long id){
-        GroupResponse group = groupService.getGroupsByUser(id);
         try{
-            if (group == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se encontro el grupo");
-            }
             groupService.deleteGroup(id);
             return ResponseEntity.status(HttpStatus.OK).body("Grupo eliminado");
         }catch (Exception e){
