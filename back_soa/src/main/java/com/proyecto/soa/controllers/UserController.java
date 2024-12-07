@@ -1,6 +1,7 @@
 package com.proyecto.soa.controllers;
 
 import com.proyecto.soa.model.dtos.UserCreateRequest;
+import com.proyecto.soa.model.dtos.UserEmail;
 import com.proyecto.soa.model.dtos.UserResponse;
 import com.proyecto.soa.model.dtos.UserUpdateRequest;
 import com.proyecto.soa.model.entities.User;
@@ -39,6 +40,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
         }
     }
+
+    @GetMapping("user/emailLike")
+    public ResponseEntity<?> showByEmailLike(@RequestParam String email){
+        try {
+            List<UserEmail> user = userService.findByEmailLike(email);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
 
     @GetMapping("user/email")
     public ResponseEntity<?> showByEmail(@RequestParam String email){

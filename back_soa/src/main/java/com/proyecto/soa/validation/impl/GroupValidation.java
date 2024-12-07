@@ -26,16 +26,6 @@ public class GroupValidation implements GroupValid {
     private final GroupRepository groupRepository;
 
     @Override
-    public Group validGetGroupById(Long groupId) {
-        Optional<Group> groups = groupRepository.findById(groupId);
-        if (groups.isPresent()) {
-            Group group = groups.get();
-            return group;
-        }
-        throw new RuntimeException("Group not found with id: " + groupId);
-    }
-
-    @Override
     public Group validCreateGroup(GroupRequest groupRequest) {
 
         Group group = new Group();

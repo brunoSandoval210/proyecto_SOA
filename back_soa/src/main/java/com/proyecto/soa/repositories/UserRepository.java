@@ -21,6 +21,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
     //Busca un usuario por su email
     Optional<User> findByEmail(String email);
 
+    //Busca un usuario por su email de manera automática
+    @Query("SELECT u FROM User u WHERE u.email like :email%")
+    List<User> findByEmailLike(@Param("email") String email);
+
     //Busca un usuario por su nombre de usuario
     Optional<User> findByUsername(String username);
 
