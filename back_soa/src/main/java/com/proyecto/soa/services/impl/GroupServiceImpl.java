@@ -5,8 +5,10 @@ import com.proyecto.soa.model.dtos.GroupResponse;
 import com.proyecto.soa.model.dtos.TableKanbanResponse;
 import com.proyecto.soa.model.dtos.TableRequest;
 import com.proyecto.soa.model.entities.Group;
+import com.proyecto.soa.model.entities.TableKanban;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.GroupRepository;
+import com.proyecto.soa.repositories.TableKanbanRepository;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.GroupService;
 import com.proyecto.soa.services.TableKanbanService;
@@ -43,14 +45,16 @@ public class GroupServiceImpl implements GroupService {
     public GroupResponse createGroup(GroupRequest groupRequest) {
 
         Group group = groupValid.validGroup(groupRequest);
+        group.setStatus(1);
         group = groupRepository.save(group);
 
         //Crear tabla Kanban para el grupo
-        TableRequest tableRequest = new TableRequest();
+        TableRequest tableKanban = new TableRequest();
         //tableRequest.setUserId(groupRequest.getUserId()); //Asignar el primer usuario del grupo
-        tableRequest.setName("Tablero de " + group.getName());
-        tableRequest.setGroupId(group.getId());
-        TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableRequest);
+        tableKanban.setName("Tablero de " + group.getName());
+        tableKanban.setGroupId(group.getId());
+        TableKanbanResponse tableKanbanResponse = tableKanbanService.save(tableKanban);
+
         GroupResponse groupResponse = modelMapper.map(group, GroupResponse.class);
         groupResponse.setTableKanbanResponse(tableKanbanResponse);
         return groupResponse;

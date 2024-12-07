@@ -10,5 +10,6 @@ import java.util.List;
 @Setter
 public class GroupRequest {
     private String name;
-    private List<Long> userId;
+    @NotNull
+    private List<Long> usersId;
 }
