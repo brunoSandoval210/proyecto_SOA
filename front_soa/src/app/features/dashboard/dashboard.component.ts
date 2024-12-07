@@ -14,7 +14,8 @@ import { TableKanbanService } from '../../core/services/table-kanban.service';
 import { AuthService } from '../../core/services/auth.service';
 import { TableComponent } from '../../shared/utils/table/table.component';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
-import { BoardComponent } from "../board/board.component";
+import { Router, RouterLink } from '@angular/router';
+import { GroupService } from '../../core/services/group.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,58 +29,62 @@ import { BoardComponent } from "../board/board.component";
     EditTaskComponent,
     TableComponent,
     AddTaskComponent,
-    BoardComponent
-],
+    RouterLink
+  ],
   templateUrl: './dashboard.component.html',
   styles: ``
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
 
-  isEditMode: boolean = false;
-  selectedTask: any [] = [];
-  userId:number = 0;
+  userId: number = 0;
   table: { id: number; name: string; columns: any[] } | null = null;
+  columnId: any;
+  taskId: any;
+  groupsLinks: any[] = [];
+
+
+  editTask: boolean = false;
   createTask: boolean = false;
-  addUser:boolean = false;
-  columnId:any;
+  addUser: boolean = false;
 
   constructor(private sharingDataService: SharingDataService,
-              private tableKanbanService:TableKanbanService,    
-              private authService:AuthService
-  ){
+    private tableKanbanService: TableKanbanService,
+    private authService: AuthService,
+    private router:Router,
+    private groupService: GroupService,
+
+  ) {
   }
 
   ngOnInit(): void {
-    // Suscribirse a cambios en la edición de tareas
-    this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-      this.openModal(isOpen, false, false);
-    });
-  
-    // Obtén el ID del usuario
     this.userId = this.authService.getUserId();
-  
-    // Carga la tabla inicial
+
     this.getTable();
-  
-    // Suscripción al evento para crear tareas
+
     this.sharingDataService.createTask.subscribe((data: { isCreateTask: boolean; columnId: any }) => {
       this.openModal(false, true, false);
-  
-      // Asigna el columnId recibido desde el evento
+
       this.columnId = data.columnId;
-      console.log('Column ID recibido:', this.columnId);
     });
-  
-    // Evento para actualizar la tabla
+
+    this.sharingDataService.editTask.subscribe((data: { isEditTask: boolean; taskId: any }) => {
+      this.openModal(true, false, false);
+
+      this.taskId = data.taskId;
+    });
+
     this.sharingDataService.eventCreateTask.subscribe(() => {
       this.getTable();
       this.closeModal();
     });
-  }
-  
 
-   // Define tu lista de tableros
-                      
+    this.sharingDataService.eventEditTask.subscribe(() => {
+      this.getTable();
+      this.closeModal();
+    });
+    this.getGroupsLink();
+  }
+
   selectedBoard: Board | null = null;
 
   selectBoard(board: Board) {
@@ -87,38 +92,20 @@ export class DashboardComponent implements OnInit{
   }
 
   createBoard() {
-    // Lógica para crear un tablero
   }
 
-  addList() {
-
-  }
-
-  drop(event: CdkDragDrop<Task[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-  }
-
-  openModal(editMode: boolean = false, createTask: boolean = false, addUse:boolean = false): void {
-    this.sharingDataService.onOpenCloseModal.emit(true);
-    this.isEditMode = editMode;
+  openModal(editTask: boolean = false, createTask: boolean = false, addUser: boolean = false): void {
+    this.editTask = editTask;
     this.createTask = createTask;
-    this.addUser = addUse;
+    this.addUser = addUser;
+
+    this.sharingDataService.onOpenCloseModal.emit(true);
   }
 
   addUsers(): void {
     this.openModal(false, false, true);
   }
 
-  
   closeModal(): void {
     this.sharingDataService.onOpenCloseModal.emit(false);
   }
@@ -132,8 +119,18 @@ export class DashboardComponent implements OnInit{
       error: (err) => {
         console.error('Error al obtener el tablero:', err);
       }
-    });  
+    });
   }
-  
+  getGroupsLink(): void {
+    this.groupService.getGroupList(this.authService.getUserId()).subscribe((groups: any[]) => {
+      this.groupsLinks = groups;
+    });
+  }
 
+  logout(): void {
+    this.authService.logout();
+  }
+
+  
 }
+

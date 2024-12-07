@@ -1,65 +1,41 @@
-<div class="m-1">
-    <!-- Título de la Tarea -->
-    <div class="mb-4">
-        <h2 class="text-2xl font-bold flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 10h11M9 21h11M5 6h14m4-1a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5z" />
-            </svg>
-            <input type="text" placeholder="Titulo" class="border-none font-sans">
-        </h2>
-        <p class="text-sm mt-1">
-            en la lista
-            <span class="text-gray-700 px-2 py-1 rounded-md">GIOMAR</span>
-        </p>
-    </div>
-
-    <!-- Miembros y Notificaciones -->
-    <div class="flex items-center justify-between mb-6">
-        <!-- Sección de Miembros -->
-        <div class="flex items-center space-x-2">
-            <p class="text-sm">Miembros</p>
-            <div class="flex items-center space-x-1">
-                <!-- Avatar -->
-                <div class="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center text-white">
-                    ER
-                </div>
-                <!-- Botón Añadir Miembro -->
-                <button class="h-8 w-8 rounded-full flex items-center justify-center bg-gray-100 hover:bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                </button>
-            </div>
+<div class="bg-white p-2">
+    <h2 class="text-xl font-semibold mb-4">Editar tarea</h2>
+    <form (ngSubmit)="onSubmit()">
+        <!-- Título de la Tarea -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="title">Título</label>
+            <input [(ngModel)]="task.title" id="title" name="title" type="text"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
+                required />
         </div>
-        <!-- Botón Notificaciones -->
-        <button class="bg-gray-500 hover:bg-gray-400 text-sm px-4 py-2 rounded-md flex items-center space-x-1">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.5V11a6 6 0 10-12 0v3.5c0 .414-.162.79-.405 1.095L4 17h5m6 0a3 3 0 11-6 0h6z" />
-            </svg>
-            <span class="text-white">Seguir</span>
-        </button>
-    </div>
-
-    <!-- Descripción -->
-    <div>
-        <p class="text-sm flex items-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-            </svg>
-            <span>Descripción</span>
-        </p>
-        <textarea
-            class="w-full text-black mt-2 p-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-            placeholder="Añadir una descripción más detallada..."></textarea>
-    </div>
-
-    <div class="mt-2 p-2 rounded-lg justify-center flex bg-blue-500">
-        <button class="text-white">Guardar tarea</button>
-    </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="descripcion">Descripción</label>
+            <textarea [(ngModel)]="task.descripcion" id="descripcion" name="descripcion" rows="3"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"></textarea>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="priority">Prioridad</label>
+            <select [(ngModel)]="task.priority" id="priority" name="priority"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
+                <option value="1">Baja</option>
+                <option value="2">Media</option>
+                <option value="3">Alta</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="priority">Estado</label>
+            <select [(ngModel)]="task.columnId" id="column" name="column"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500">
+                <option *ngFor="let col of columns" [value]="col.id">{{ col.name }}</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="limitDate">Fecha Límite</label>
+            <input [(ngModel)]="task.limitDate" id="limitDate" name="limitDate" type="date"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-cyan-500 focus:border-cyan-500"
+                required />
+        </div>
+        <!-- Botón Guardar -->
+        <button type="submit" class="w-full bg-cyan-600 text-white py-2 px-4 rounded-md hover:bg-cyan-700">Guardar tarea</button>
+    </form>
 </div>

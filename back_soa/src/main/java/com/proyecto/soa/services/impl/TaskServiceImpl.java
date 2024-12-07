@@ -1,16 +1,18 @@
 package com.proyecto.soa.services.impl;
 
-import com.proyecto.soa.model.dtos.TaskRequest;
-import com.proyecto.soa.model.dtos.TaskResponse;
+import com.proyecto.soa.model.dtos.*;
 import com.proyecto.soa.model.entities.Task;
 import com.proyecto.soa.repositories.TaskRepository;
 import com.proyecto.soa.services.TaskService;
-import com.proyecto.soa.services.UserService;
 import com.proyecto.soa.validation.TaskValid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +46,21 @@ public class TaskServiceImpl implements TaskService {
         return taskResponse;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public TaskResponse findById(Long id) {
+        Optional<Task> task = taskRepository.findById(id);
+        TaskResponse taskResponse = modelMapper.map(task, TaskResponse.class);
+        taskResponse.setColumnId(task.get().getColumnsTable().getId());
+        return taskResponse;
+    }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<TaskUserReponse> findTaskByUser(Long id) {
+        List<Task> tasks = taskRepository.findByAssignedUser_Id(id);
+        return tasks.stream()
+                .map(task -> modelMapper.map(task, TaskUserReponse.class))
+                .collect(Collectors.toList());
+    }
 }

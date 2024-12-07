@@ -1,13 +1,17 @@
 package com.proyecto.soa.services;
 
+import com.proyecto.soa.model.dtos.AddUserGroup;
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
+import com.proyecto.soa.model.dtos.GroupsByUser;
 
 import java.util.List;
 
 public interface GroupService {
 
-    GroupResponse getGroupsByUser(Long userId);
+    GroupResponse getGroupById(Long groupId);
+    List<GroupsByUser> getGroupsByUser(Long userId);
     GroupResponse createGroup(GroupRequest groupRequest);
+    void AddUserToGroup(AddUserGroup addUserGroup);
     void deleteGroup(Long groupId);
 }

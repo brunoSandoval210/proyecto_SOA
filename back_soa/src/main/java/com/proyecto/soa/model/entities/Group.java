@@ -3,6 +3,7 @@ package com.proyecto.soa.model.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,6 +20,6 @@ public class Group extends Maintenance{
     @OneToOne(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     private TableKanban tableKanban;
 
-    @ManyToMany(mappedBy = "groups")
-    private List<User> users;
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserGroup> userGroups;
 }

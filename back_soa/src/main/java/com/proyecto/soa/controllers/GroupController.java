@@ -1,7 +1,9 @@
 package com.proyecto.soa.controllers;
 
+import com.proyecto.soa.model.dtos.AddUserGroup;
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
+import com.proyecto.soa.model.dtos.GroupsByUser;
 import com.proyecto.soa.services.GroupService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,11 +23,21 @@ public class GroupController {
 
     private final GroupService groupService;
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getGroupById(@PathVariable Long id){
+        try {
+            GroupResponse group = groupService.getGroupById(id);
+            return ResponseEntity.status(HttpStatus.OK).body(group);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/list/{id}")
     public ResponseEntity<?> listByUser(@PathVariable Long id){
         try {
-            GroupResponse group = groupService.getGroupsByUser(id);
-            return ResponseEntity.status(HttpStatus.OK).body(group);
+            List<GroupsByUser> groups = groupService.getGroupsByUser(id);
+            return ResponseEntity.status(HttpStatus.OK).body(groups);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -44,13 +57,22 @@ public class GroupController {
         }
     }
 
+    @PutMapping("/addUser")
+    public ResponseEntity<?> addUserToGroup(@Valid @RequestBody AddUserGroup addUserGroup, BindingResult result){
+        try{
+            if(result.hasErrors()){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getAllErrors());
+            }
+            groupService.AddUserToGroup(addUserGroup);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario agregado al grupo");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("error",e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteGroup(@PathVariable Long id){
-        GroupResponse group = groupService.getGroupsByUser(id);
         try{
-            if (group == null){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se encontro el grupo");
-            }
             groupService.deleteGroup(id);
             return ResponseEntity.status(HttpStatus.OK).body("Grupo eliminado");
         }catch (Exception e){

@@ -4,7 +4,6 @@ import com.proyecto.soa.model.dtos.*;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.repositories.UserRepository;
 import com.proyecto.soa.services.TableKanbanService;
-import com.proyecto.soa.services.TaskService;
 import com.proyecto.soa.services.UserService;
 import com.proyecto.soa.validation.UserValid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private final UserValid userValid;
     private final PasswordEncoder passwordEncoder;
     private final TableKanbanService tableKanbanService;
-
 
     @Transactional(readOnly = true)
     @Override
@@ -52,6 +50,18 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByEmail(email);
 
         return user.map(value -> List.of(modelMapper.map(value, UserResponse.class))).orElse(null);
+    }
+
+    @Override
+    public List<UserEmail> findByEmailLike(String email) {
+
+        List<User> users = userRepository.findByEmailLike(email);
+
+        if (users.isEmpty()) {
+            throw new RuntimeException("No se encontraron usuarios con el email: " + email);
+        }
+
+        return users.stream().map(user -> modelMapper.map(user, UserEmail.class)).toList();
     }
 
     @Transactional

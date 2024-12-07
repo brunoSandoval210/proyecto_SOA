@@ -13,7 +13,14 @@ export class SharingDataService {
   private _changeEditTask = new EventEmitter<any>();
 
   private _createTask = new EventEmitter<any>();
+  
   private _eventCreateTask=new EventEmitter<any>();
+
+  private _editTask = new EventEmitter<any>();
+  
+  private _eventEditTask=new EventEmitter<any>();
+
+  private _cleanPopup = new EventEmitter<any>();
 
   get onOpenCloseModal(): EventEmitter<boolean> {
     return this._onOpenCloseModal;
@@ -28,6 +35,16 @@ export class SharingDataService {
   }
   get eventCreateTask(): EventEmitter<any> {
     return this._eventCreateTask;
+  }
+
+  get editTask(): EventEmitter<any> {
+    return this._editTask;
+  }
+  get eventEditTask(): EventEmitter<any> {
+    return this._eventEditTask;
+  }
+  get cleanPopup(): EventEmitter<any> {
+    return this._cleanPopup;
   }
 
 }

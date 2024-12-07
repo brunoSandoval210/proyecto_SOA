@@ -1,0 +1,102 @@
+<div class="flex flex-col h-screen">
+    <!-- Header -->
+    <header class="flex-shrink-0">
+        <app-header></app-header> <!-- Aquí se usa el componente del header -->
+    </header>
+    <div class="dashboard-container flex h-screen bg-gray-100">
+        <aside class="sidebar w-60 bg-gray-800 text-gray-400 flex flex-col p-4">
+            <h2 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">
+                Espacios de trabajo
+            </h2>
+            <div class="workspace flex flex-col mb-6">
+                <p class="text-lg font-medium text-gray-300 mb-3"><a [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Mi tablero</a></p>
+                <p class="text-lg font-medium text-gray-300 mb-3"><a [routerLink]="['/calendar']" routerLinkActive="router-link-active" >Mi calendario</a></p>
+            </div>
+            <div class="workspace flex flex-col mb-6">
+                <p class="text-lg font-medium text-gray-300 mb-3">Tableros Compartidos</p>
+                <ul class="space-y-3">
+                  <!-- Mostrar enlaces dinámicos para los tableros -->
+                  <li
+                    *ngFor="let group of groupsLinks"
+                    class="group p-3 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
+                  >
+                    <a
+                      [routerLink]="['/group', group.groupId]"
+                      class="text-white font-medium text-sm flex items-center"
+                    >
+                      <span class="material-icons text-white mr-2">folder</span>
+                      {{ group.groupName }}
+                    </a>
+                  </li>
+                </ul>
+                <ng-template #noGroups>
+                  <p class="text-gray-500 text-center">No hay tableros compartidos.</p>
+                </ng-template>
+              </div>
+            <div class="mt-auto">
+                <button (click)="logout()"
+                    class="w-full bg-red-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-500 transition">
+                    Log Out
+                </button>
+            </div>
+        </aside>
+
+
+        <main class="board-container flex-1 p-0">
+
+            <div
+                class="calendar w-full max-w-6xl mx-auto my-8 px-6 sm:px-8 md:px-12 bg-white border border-gray-300 rounded-xl shadow-md">
+                <!-- Encabezado del Calendario -->
+                <div class="calendar-header flex justify-between items-center p-4 border-b border-gray-200">
+                    <button (click)="changeMonth(-1)" class="prev-month text-blue-500 text-xl">Antes</button>
+                    <span class="month-name text-xl font-bold text-gray-700">
+                        {{ monthNames[currentMonth] }} del {{ currentYear }}
+                    </span>
+                    <button (click)="changeMonth(1)" class="next-month text-blue-500 text-xl">Siguiente</button>
+                </div>
+
+                <!-- Cuadrícula del Calendario -->
+                <div class="calendar-grid grid grid-cols-7 gap-4 p-6 bg-gray-50">
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Domingo</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Lunes</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Martes</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Miércoles</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Jueves</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Viernes</div>
+                    <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Sábado</div>
+
+                    <!-- Los días del mes -->
+                    <div *ngFor="let day of daysInMonth"
+                        class="day text-center py-4 px-3 bg-white rounded-lg border hover:shadow-md cursor-pointer transition-all"
+                        [ngClass]="{
+                        'border-gray-300': getTasksForDay(day).length === 0,
+                        'border-blue-500': getTasksForDay(day).length > 0
+                        }" (click)="getTasksForDay(day).length > 0 && openModal(day)">
+                        <div class="text-xl font-bold text-gray-800">{{ day }}</div>
+                        <div *ngIf="getTasksForDay(day).length === 0" class="text-gray-400 text-sm mt-2">
+                            No hay tareas
+                        </div>
+                        <div *ngIf="getTasksForDay(day).length > 0" class="text-blue-600 text-sm mt-2">
+                            {{ getTasksForDay(day).length }} tarea(s)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <app-popup>
+                @if (isModalOpen) {
+                <app-tasks-calendar [tasks]="tasksForModal"></app-tasks-calendar>
+                }
+            </app-popup>
+
+
+            <!-- Botón de regresar al dashboard -->
+            <!-- <div class="back-button mt-8 text-center">
+                <button class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-400">
+                    Regresar al Dashboard
+                </button>
+            </div> -->
+        </main>
+    </div>
+</div>

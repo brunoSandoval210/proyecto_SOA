@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +21,20 @@ export class AuthService {
     isAuth: false,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   private isBrowser(): boolean {
     return typeof window !== 'undefined';
   }
 
   loginUser({ username, password }: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/login`, { username, password });
+    return this.http.post<any>(`${this.url}/login`, { username, password }).pipe(
+      tap(response => {
+        if (response && response.token) {
+          this.token = response.token;
+        }
+      })
+    );
   }
 
   sendEmailForRecoveryPassword(email: string): Observable<any> {
@@ -74,11 +82,14 @@ export class AuthService {
     const payload = this.getPayload(token);
     if (payload) {
       this.user = {
-        id: payload.id, // Extraer el ID del usuario
-        username: payload.username, // Extraer el username del usuario
-        role: payload.authorities[0], // Asumiendo que solo hay un rol
+        id: payload.id, // Asegúrate de que el payload tenga esta propiedad
+        username: payload.username, // Asegúrate de que el payload tenga esta propiedad
+        role: payload.authorities ? payload.authorities[0] : '', // Verifica si authorities está definido
         isAuth: true,
       };
+      if (this.isBrowser()) {
+        sessionStorage.setItem('userId', payload.id);
+      }
       console.log('Token válido hasta:', new Date(payload.exp * 1000));
     }
   }
@@ -94,7 +105,13 @@ export class AuthService {
   }
 
   getUserId() {
-    return this.user.id; // Retorna el ID del usuario desde el estado
+    if (this._user.id) {
+      return this._user.id;
+    } else if (this.isBrowser() && sessionStorage.getItem('userId') != null) {
+      this._user.id = parseInt(sessionStorage.getItem('userId') || '0', 10);
+      return this._user.id;
+    }
+    return 0;
   }
 
   getPayload(token: string) {
@@ -132,6 +149,8 @@ export class AuthService {
     if (this.isBrowser()) {
       sessionStorage.removeItem('login');
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('userId');
     }
+    this.router.navigate(['/login']);
   }
 }
