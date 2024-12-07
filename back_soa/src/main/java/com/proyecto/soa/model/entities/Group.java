@@ -3,6 +3,7 @@ package com.proyecto.soa.model.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -20,5 +21,5 @@ public class Group extends Maintenance{
     private TableKanban tableKanban;
 
     @ManyToMany(mappedBy = "groups")
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 }

@@ -12,5 +12,5 @@ public class GroupRequest {
     @NotNull
     private String name;
     @NotNull
-    private Long userId;
+    private List<Long> usersId;
 }

@@ -14,8 +14,12 @@ public interface GroupRepository extends JpaRepository<Group,Long> {
     @Query("SELECT g FROM Group g JOIN g.users u WHERE u.id = :userId")
     Optional<Group> findByUserId(Long userId);
 
-    //vericiar si existe un grupo por nombre
+    //verificar si existe un grupo por nombre
     boolean existsByName(String name);
 
     boolean existsById(Long groupId);
+
+    //Verificar si un usuario pertenece a un grupo
+    @Query("SELECT g FROM Group g JOIN g.users u WHERE u.id = :userId AND g.id = :groupId")
+    Optional<Group> existsUserInGroup(Long userId, Long groupId);
 }
