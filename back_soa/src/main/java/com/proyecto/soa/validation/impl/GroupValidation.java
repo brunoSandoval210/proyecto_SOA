@@ -1,5 +1,6 @@
 package com.proyecto.soa.validation.impl;
 
+import com.proyecto.soa.model.dtos.AddUserGroup;
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
 import com.proyecto.soa.model.dtos.UserGroupResponse;
@@ -46,6 +47,28 @@ public class GroupValidation implements GroupValid {
         }
         group.setUserGroups(userGroups);
         group.setName(groupRequest.getName());
+        return group;
+    }
+
+    @Override
+    public Group validAddUserToGroup(AddUserGroup addUserGroup) {
+        Group group = groupRepository.findById(addUserGroup.getGroupId())
+                .orElseThrow(() -> new RuntimeException("Grupo con id: " + addUserGroup.getGroupId() + " no encontrado"));
+        for (Long userId : addUserGroup.getUsersId()) {
+            UserGroup userGroup = new UserGroup();
+            Optional<User> user = userRepository.findById(userId);
+            if (user.isEmpty()) {
+                throw new RuntimeException("Usuario con id: " + userId + "no encontrado");
+            }
+            //Verificar si el usuario pertenece a un grupo
+            if (groupRepository.findByUserGroups_UserId(userId).contains(group)) {
+                throw new RuntimeException("El usuario ya pertenece al grupo");
+            }
+            userGroup.setUser(user.get());
+            userGroup.setGroup(group);
+            userGroup.setId(new UserGroupId(userId, group.getId()));
+            group.getUserGroups().add(userGroup);
+        }
         return group;
     }
 }

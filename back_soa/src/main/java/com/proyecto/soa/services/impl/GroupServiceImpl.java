@@ -104,6 +104,13 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    public void AddUserToGroup(AddUserGroup addUserGroup) {
+        Group group = groupValid.validAddUserToGroup(addUserGroup);
+        groupRepository.save(group);
+
+    }
+
+    @Override
     public void deleteGroup(Long groupId) {
         groupRepository.deleteById(groupId);
 

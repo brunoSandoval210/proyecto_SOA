@@ -1,5 +1,6 @@
 package com.proyecto.soa.services;
 
+import com.proyecto.soa.model.dtos.AddUserGroup;
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
 import com.proyecto.soa.model.dtos.GroupsByUser;
@@ -11,5 +12,6 @@ public interface GroupService {
     GroupResponse getGroupById(Long groupId);
     List<GroupsByUser> getGroupsByUser(Long userId);
     GroupResponse createGroup(GroupRequest groupRequest);
+    void AddUserToGroup(AddUserGroup addUserGroup);
     void deleteGroup(Long groupId);
 }
