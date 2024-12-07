@@ -8,4 +8,5 @@ import lombok.Setter;
 public class UserGroupResponse {
     private Long id;
     private String name;
+    private String lastname;
 }

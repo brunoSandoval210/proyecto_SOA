@@ -25,7 +25,7 @@ public class GroupController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getGroupById(@PathVariable Long id){
         try {
-            List<GroupResponse> group = groupService.getGroupsById(id);
+            GroupResponse group = groupService.getGroupById(id);
             return ResponseEntity.status(HttpStatus.OK).body(group);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

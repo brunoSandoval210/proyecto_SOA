@@ -2,6 +2,7 @@ package com.proyecto.soa.validation.impl;
 
 import com.proyecto.soa.model.dtos.GroupRequest;
 import com.proyecto.soa.model.dtos.GroupResponse;
+import com.proyecto.soa.model.dtos.UserGroupResponse;
 import com.proyecto.soa.model.entities.Group;
 import com.proyecto.soa.model.entities.User;
 import com.proyecto.soa.model.entities.UserGroup;
@@ -23,12 +24,10 @@ public class GroupValidation implements GroupValid {
 
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
-    private final ModelMapper modelMapper;
 
     @Override
     public Group validGetGroupById(Long groupId) {
         Optional<Group> groups = groupRepository.findById(groupId);
-
         if (groups.isPresent()) {
             Group group = groups.get();
             return group;

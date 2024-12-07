@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final TableKanbanService tableKanbanService;
 
-
     @Transactional(readOnly = true)
     @Override
     public Page<UserResponse> findAll(Pageable pageable) {

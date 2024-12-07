@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GroupService {
 
-    List<GroupResponse> getGroupsById(Long groupId);
+    GroupResponse getGroupById(Long groupId);
     List<GroupsByUser> getGroupsByUser(Long userId);
     GroupResponse createGroup(GroupRequest groupRequest);
     void deleteGroup(Long groupId);
