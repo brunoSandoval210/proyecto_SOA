@@ -53,12 +53,12 @@ export class TaskService {
   updateTask(
     id: number,
     taskPayload: {
-      column: number;
-      title: string;
-      descripcion: string;
-      priority: number;
-      limitDate: string;
-      user: number;
+      column: number | undefined;
+      title: string | undefined;
+      descripcion: string | undefined;
+      priority: number | undefined;
+      limitDate: string | undefined;
+      user: number | undefined;
     }
   ): Observable<{ success: boolean; message: string }> {
     const headers = this.getAuthHeaders();
