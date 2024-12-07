@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { SharingDataService } from '../../shared/services/sharing-data.service';
 import { AuthService } from '../../core/services/auth.service';
-import { Router } from '@angular/router';
 import { BoardComponent } from '../board/board.component';
 import { TaskService } from '../../core/services/task.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PopupComponent } from '../../shared/utils/popup/popup.component';
+import { TasksCalendarComponent } from './tasks-calendar/tasks-calendar.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -14,7 +16,10 @@ import { CommonModule } from '@angular/common';
   imports: [
     HeaderComponent,
     BoardComponent,
-    CommonModule
+    CommonModule,
+    PopupComponent,
+    TasksCalendarComponent,
+    RouterLink
   ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
@@ -22,8 +27,10 @@ import { CommonModule } from '@angular/common';
 export class CalendarComponent implements OnInit {
 
   tasks: any[] = [];
+  tasksForModal: any[] = []; 
   daysInMonth: number[] = [];
   currentMonth: number = new Date().getMonth();
+  isModalOpen:boolean = false;
   currentYear: number = new Date().getFullYear();
 
   monthNames: string[] = [
@@ -34,16 +41,13 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private sharingDataService: SharingDataService,
     private taskService: TaskService,
     private authService: AuthService,
-    private router: Router
+    private sharingDataService: SharingDataService,
   ) {}
   
 
   ngOnInit(): void {
-    console.log('Mes actual:', this.currentMonth);
-    console.log('Año actual:', this.currentYear);
     this.loadTasks();
     this.generateDaysInMonth();
   }
@@ -53,7 +57,6 @@ export class CalendarComponent implements OnInit {
     const userId = this.authService.getUserId();
     this.taskService.getTaskbyIdUser(userId).subscribe((tasks: any[]) => {
       this.tasks = tasks;
-      console.log('Tareas cargadas:', this.tasks); // Verifica que las tareas se carguen correctamente
     });
   }
 
@@ -73,7 +76,6 @@ export class CalendarComponent implements OnInit {
   changeMonth(offset: number): void {
     this.currentMonth += offset;
   
-    // Cambiar de año si es necesario
     if (this.currentMonth < 0) {
       this.currentMonth = 11;
       this.currentYear--;
@@ -82,8 +84,21 @@ export class CalendarComponent implements OnInit {
       this.currentYear++;
     }
   
-    // Regenerar los días del mes
     this.generateDaysInMonth();
+  }
+
+
+  
+  openModal(day: number): void {
+    this.tasksForModal = this.getTasksForDay(day);
+    this.isModalOpen = true;
+    this.sharingDataService.onOpenCloseModal.emit(true);
+  }
+  
+  closeModal(): void {
+    this.sharingDataService.onOpenCloseModal.emit(false);
+    this.isModalOpen = false;
+    this.tasksForModal = [];
   }
   
 
