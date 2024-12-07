@@ -9,9 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class GroupResponse {
-    @NotNull
     private Long id;
-    @NotNull
     private String name;
     private TableKanbanResponse tableKanbanResponse;
     private List<UserResponse> users;
