@@ -19,6 +19,11 @@ export class UserService {
     return this.http.get<User[]>(this.url);
   }
 
+  // Obtener user
+  getUserbyId(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.url}/user/${userId}`);
+  }
+
   // Crear un nuevo User
   createUser(User: any): Observable<User> {
     return this.http.post<any>(`${this.url}/registerUser`, User);

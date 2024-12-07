@@ -20,7 +20,9 @@ export class EditTaskComponent implements OnInit, OnChanges {
   @Input() taskId: any;
   @Input() tableId: any;
   userId: number = 0;
-  column: any;
+
+  // Lista de columnas para poblar el combobox
+  columns: Array<{ id: number, name: string }> = [];
 
   task: Task = {
     id: 0,
@@ -29,10 +31,9 @@ export class EditTaskComponent implements OnInit, OnChanges {
     limitDate: '',
     nameUser: '',
     priority: 1,
-    userId: 0
+    userId: 0,
+    columnId: 0
   };
-  
-  table: any;
 
   constructor(
     private taskService: TaskService,
@@ -49,6 +50,7 @@ export class EditTaskComponent implements OnInit, OnChanges {
     });
     this.userId = this.authService.getUserId();
     this.getTask();
+    this.getColumns();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -70,15 +72,15 @@ export class EditTaskComponent implements OnInit, OnChanges {
   }
 
   getColumns(){
-    this.tableKanbanService.getColumnsByTable(this.table).subscribe({
+    this.tableKanbanService.getColumnsByTable(this.tableId).subscribe({
       next: (data: any) => {
-        this.table = data;
-        console.log('Tablero Kanban:', this.table);
+        this.columns = data; // Almacenar las columnas
+        console.log('Columnas obtenidas:', this.columns);
       },
       error: (err) => {
-        console.error('Error al obtener las columnas del tablero:', err);
+        console.error('Error al obtener las columnas:', err);
       }
-    })
+    });
   }
 
   resetTask(): void {
@@ -95,7 +97,7 @@ export class EditTaskComponent implements OnInit, OnChanges {
 
   onSubmit() {
     const taskPayload = {
-      column: this.column,
+      column: this.task.columnId,
       title: this.task.title,
       descripcion: this.task.descripcion,
       priority: this.task.priority,

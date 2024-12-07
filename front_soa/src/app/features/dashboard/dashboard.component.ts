@@ -54,11 +54,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //  // Suscribirse a cambios en la edición de tareas
-    //  this.sharingDataService.changeEditTask.subscribe((isOpen: boolean) => {
-    //    this.openModal(isOpen, false);
-    // });
-
     // Obtén el ID del usuario
     this.userId = this.authService.getUserId();
 
@@ -92,19 +87,6 @@ export class DashboardComponent implements OnInit {
       this.getTable();
       this.closeModal();
     });
-  }
-
-
-  // Define tu lista de tableros
-
-  selectedBoard: Board | null = null;
-
-  selectBoard(board: Board) {
-    this.selectedBoard = board;
-  }
-
-  createBoard() {
-    // Lógica para crear un tablero
   }
 
   openModal(editTask: boolean = false, createTask: boolean = false, addUser: boolean = false): void {
