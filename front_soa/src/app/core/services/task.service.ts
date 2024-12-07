@@ -34,6 +34,13 @@ export class TaskService {
     });
   }
 
+  
+  getTaskbyIdUser(id: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    const url = `${this.apiUrl}/user/${id}`;
+    return this.http.get<any>(url,{headers});
+  }
+
   // Método para crear una tarea
   createTask(
     taskPayload: { 
@@ -53,12 +60,12 @@ export class TaskService {
   updateTask(
     id: number,
     taskPayload: {
-      column: number;
-      title: string;
-      descripcion: string;
-      priority: number;
-      limitDate: string;
-      user: number;
+      column: number | undefined;
+      title: string | undefined;
+      descripcion: string | undefined;
+      priority: number | undefined;
+      limitDate: string | undefined;
+      user: number | undefined;
     }
   ): Observable<{ success: boolean; message: string }> {
     const headers = this.getAuthHeaders();

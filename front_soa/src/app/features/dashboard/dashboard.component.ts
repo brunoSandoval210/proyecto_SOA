@@ -15,6 +15,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { TableComponent } from '../../shared/utils/table/table.component';
 import { AddTaskComponent } from '../task/add-task/add-task.component';
 import { BoardComponent } from "../board/board.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,8 +36,6 @@ import { BoardComponent } from "../board/board.component";
 })
 export class DashboardComponent implements OnInit {
 
-  selectedTask: any[] = [];
-
   userId: number = 0;
   table: { id: number; name: string; columns: any[] } | null = null;
   columnId: any;
@@ -48,7 +47,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(private sharingDataService: SharingDataService,
     private tableKanbanService: TableKanbanService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router:Router
   ) {
   }
 
@@ -83,6 +83,12 @@ export class DashboardComponent implements OnInit {
 
     // Evento para actualizar la tabla
     this.sharingDataService.eventCreateTask.subscribe(() => {
+      this.getTable();
+      this.closeModal();
+    });
+
+    // Evento para actualizar la tabla
+    this.sharingDataService.eventEditTask.subscribe(() => {
       this.getTable();
       this.closeModal();
     });
@@ -131,5 +137,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  logout(): void {
+    this.authService.logout();
+  }
 
+  
 }
+

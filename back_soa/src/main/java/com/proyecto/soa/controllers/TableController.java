@@ -42,4 +42,13 @@ public class TableController {
             return ResponseEntity.badRequest().body("Error al crear la tabla"+ e.getMessage());
         }
     }
+
+    @GetMapping("/columns/{idTable}")
+    public ResponseEntity<?> getColumnsByTable(@PathVariable Long idTable){
+        try {
+            return ResponseEntity.ok(tableKanbanService.getColumnsByTable(idTable));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al buscar las columnas de la tabla");
+        }
+    }
 }
