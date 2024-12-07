@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { PopupComponent } from '../../shared/utils/popup/popup.component';
 import { TasksCalendarComponent } from './tasks-calendar/tasks-calendar.component';
 import { RouterLink } from '@angular/router';
+import { GroupService } from '../../core/services/group.service';
 
 @Component({
   selector: 'app-calendar',
@@ -32,6 +33,7 @@ export class CalendarComponent implements OnInit {
   currentMonth: number = new Date().getMonth();
   isModalOpen:boolean = false;
   currentYear: number = new Date().getFullYear();
+  groupsLinks: any[] = [];
 
   monthNames: string[] = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -44,12 +46,14 @@ export class CalendarComponent implements OnInit {
     private taskService: TaskService,
     private authService: AuthService,
     private sharingDataService: SharingDataService,
+    private groupService: GroupService,
   ) {}
   
 
   ngOnInit(): void {
     this.loadTasks();
     this.generateDaysInMonth();
+    this.getGroupsLink();
   }
   
 
@@ -99,6 +103,13 @@ export class CalendarComponent implements OnInit {
     this.sharingDataService.onOpenCloseModal.emit(false);
     this.isModalOpen = false;
     this.tasksForModal = [];
+  }
+
+  getGroupsLink(): void {
+    this.groupService.getGroupList(this.authService.getUserId()).subscribe((groups: any[]) => {
+      this.groupsLinks = groups;
+      console.log(this.groupsLinks);
+    });
   }
   
 

@@ -14,16 +14,25 @@
             </div>
             <div class="workspace flex flex-col mb-6">
                 <p class="text-lg font-medium text-gray-300 mb-3">Tableros Compartidos</p>
-                <ul class="space-y-2">
-                    <li>
-                        <app-board></app-board>
-                    </li>
-                    <li>
-                        <app-board></app-board>
-                    </li>
+                <ul class="space-y-3">
+                  <!-- Mostrar enlaces dinámicos para los tableros -->
+                  <li
+                    *ngFor="let group of groupsLinks"
+                    class="group p-3 bg-gray-700 hover:bg-gray-600 transition-colors rounded-lg"
+                  >
+                    <a
+                      [routerLink]="['/board', group.groupId]"
+                      class="text-white font-medium text-sm flex items-center"
+                    >
+                      <span class="material-icons text-white mr-2">folder</span>
+                      {{ group.groupName }}
+                    </a>
+                  </li>
                 </ul>
-            </div>
-
+                <ng-template #noGroups>
+                  <p class="text-gray-500 text-center">No hay tableros compartidos.</p>
+                </ng-template>
+              </div>
             <div class="mt-auto">
                 <button (click)="logout()"
                     class="w-full bg-red-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-500 transition">
