@@ -1,0 +1,62 @@
+<div class="main-container ml-52 p-6 flex flex-col w-full">
+
+    <!-- Header -->
+    <div class="header w-full flex justify-between items-center mb-6">
+        <div class="user-profile flex items-center">
+            <span class="text-lg">Usuario: Juan Pérez</span>
+            <img src="profile.jpg" alt="Perfil" class="rounded-full w-10 h-10 ml-4">
+        </div>
+        <div class="clock text-lg font-bold text-gray-800">
+            <span id="time">00:00</span>
+        </div>
+    </div>
+
+    <!-- Calendario -->
+    <div class="calendar w-full px-4 sm:px-8 md:px-16 lg:px-20 xl:px-24 bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden mx-auto">
+
+        <!-- Encabezado del Calendario -->
+        <div class="calendar-header flex justify-between items-center p-4 border-b border-gray-200">
+            <button class="prev-month text-blue-500 text-xl">Prev</button>
+            <span class="month-name text-xl font-bold text-gray-700">December 2024</span>
+            <button class="next-month text-blue-500 text-xl">Next</button>
+        </div>
+
+        <!-- Cuadrícula del Calendario -->
+        <div class="calendar-grid grid grid-cols-7 gap-2 p-4 bg-gray-50">
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Sun</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Mon</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Tue</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Wed</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Thu</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Fri</div>
+            <div class="day-name text-center font-bold text-sm text-gray-600 p-2">Sat</div>
+
+            <!-- Los días del mes -->
+            <div class="day text-center py-4 px-2 bg-white rounded-lg hover:bg-blue-100 cursor-pointer">
+                1
+                <div class="task bg-gray-200 p-2 mt-2 rounded-md text-sm">Tarea 1</div>
+            </div>
+            <div class="day text-center py-4 px-2 bg-white rounded-lg hover:bg-blue-100 cursor-pointer">
+                2
+                <div class="task bg-gray-200 p-2 mt-2 rounded-md text-sm">Tarea 2</div>
+            </div>
+            <div class="day text-center py-4 px-2 bg-white rounded-lg hover:bg-blue-100 cursor-pointer">
+                3
+                <div class="task bg-gray-200 p-2 mt-2 rounded-md text-sm">Tarea 3</div>
+            </div>
+            <div class="day text-center py-4 px-2 bg-white rounded-lg hover:bg-blue-100 cursor-pointer">
+                4
+                <div class="task bg-gray-200 p-2 mt-2 rounded-md text-sm">Tarea 4</div>
+            </div>
+            <!-- Añadir el resto de los días -->
+        </div>
+    </div>
+
+    <!-- Botón de regresar al dashboard -->
+    <div class="back-button mt-8 text-center">
+        <button onclick="window.location.href = '/dashboard';" class="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-400">
+            Regresar al Dashboard
+        </button>
+    </div>
+
+</div>
